@@ -2,5 +2,6 @@
 {
     public class TestClass
     {
+        private int nr;
     }
 }
