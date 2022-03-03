@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace AutomobileRepairShop.Models
 {
-    public partial class Department
+    public partial class Appointment
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
+        public DateTime Date { get; set; }
     }
 }
