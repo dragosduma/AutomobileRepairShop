@@ -8,6 +8,5 @@ namespace AutomobileRepairShop.Models
         public int Id { get; set; }
         public double Salary { get; set; }
         public int DepartmentId { get; set; }
-        public int IdUser { get; set; }
     }
 }

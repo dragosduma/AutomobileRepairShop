@@ -6,6 +6,5 @@ namespace AutomobileRepairShop.Models
     public partial class Client
     {
         public int Id { get; set; }
-        public int IdUser { get; set; }
     }
 }
