@@ -9,7 +9,7 @@ namespace AutomobileRepairShop.Models
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
         public string Address { get; set; } = null!;
-        public int Age { get; set; }
+        public DateTime Birthday { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public int IdRole { get; set; }
