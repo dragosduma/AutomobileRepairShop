@@ -15,5 +15,6 @@ namespace AutomobileRepairShop.Models
         public int IdRole { get; set; }
 
         public virtual Role IdRoleNavigation { get; set; } = null!;
+        public virtual Client Client { get; set; } = null!;
     }
 }
