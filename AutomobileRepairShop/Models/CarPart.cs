@@ -11,5 +11,7 @@ namespace AutomobileRepairShop.Models
         public string Name { get; set; } = null!;
         public double LaborPrice { get; set; }
         public string LaborName { get; set; } = null!;
+
+        public virtual Department Department { get; set; } = null!;
     }
 }
