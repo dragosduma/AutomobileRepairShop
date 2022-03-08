@@ -15,12 +15,12 @@ namespace AutomobileRepairShop.Controllers
             AutoRSContext db = new AutoRSContext();
             // idrole==2 means regular user
             user.IdRole = 2;
-            // password hashing
-
             // check for email duplicates
 
+            // password hashing
 
-            // adds user 
+
+            // add user operation
             db.Users.Add(user);
             db.SaveChanges();
             return View();
