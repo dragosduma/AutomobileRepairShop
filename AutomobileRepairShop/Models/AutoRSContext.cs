@@ -41,9 +41,7 @@ namespace AutomobileRepairShop.Models
             {
                 entity.ToTable("Appointment");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Date).HasColumnType("datetime");
             });
@@ -52,9 +50,7 @@ namespace AutomobileRepairShop.Models
             {
                 entity.ToTable("Bill");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.AppointmentId).HasColumnName("Appointment_ID");
 
@@ -69,9 +65,7 @@ namespace AutomobileRepairShop.Models
             {
                 entity.ToTable("Car");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Brand)
                     .HasMaxLength(50)
@@ -91,9 +85,7 @@ namespace AutomobileRepairShop.Models
 
             modelBuilder.Entity<CarPart>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.DepartmentId).HasColumnName("Department_ID");
 
@@ -110,20 +102,14 @@ namespace AutomobileRepairShop.Models
             {
                 entity.ToTable("Client");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
-
-                entity.Property(e => e.IdUser).HasColumnName("ID_User");
+                entity.Property(e => e.Id).HasColumnName("ID");
             });
 
             modelBuilder.Entity<Department>(entity =>
             {
                 entity.ToTable("Department");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -134,20 +120,14 @@ namespace AutomobileRepairShop.Models
             {
                 entity.ToTable("Employee");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.DepartmentId).HasColumnName("Department_ID");
-
-                entity.Property(e => e.IdUser).HasColumnName("ID_User");
             });
 
             modelBuilder.Entity<Role>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -158,11 +138,11 @@ namespace AutomobileRepairShop.Models
             {
                 entity.ToTable("User");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Address).IsUnicode(false);
+
+                entity.Property(e => e.Birthday).HasColumnType("date");
 
                 entity.Property(e => e.Email).IsUnicode(false);
 
