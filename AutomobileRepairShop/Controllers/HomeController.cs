@@ -38,5 +38,16 @@ namespace AutomobileRepairShop.Controllers
         {
             return View();
         }
+
+        public ActionResult Welcome()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(User obj)
+        {
+            return View(obj);
+        }
     }
 }
