@@ -18,7 +18,7 @@
 
                 <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                     
-                @using (Html.BeginForm("Welcome", "Registration", FormMethod.Post)){
+                @using (Html.BeginForm("Login", "Registration", FormMethod.Post)){
                     <!-- registration form -->
                     <!-- <form style="width: 23rem;"> -->
 
@@ -45,19 +45,19 @@
 
                         <!-- Birthday input & label -->
                        <div class="form-outline mb-4">
-                            <input asp-for="Age" type="date" id="birthday" class="form-control form-control-lg" />
+                            <input asp-for="Birthday" type="date" id="birthday" class="form-control form-control-lg" />
                             <label class="form-label" for="birthday">Birthday</label>
                         </div>
 
                         <!-- Email input & label -->
                         <div class="form-outline mb-4">
-                            <input type="email" id="email" class="form-control form-control-lg" />
+                            <input asp-for="Email" type="email" id="email" class="form-control form-control-lg" />
                             <label class="form-label" for="email">Email address</label>
                         </div>
 
                         <!-- Password input & label -->
                         <div class="form-outline mb-4">
-                            <input type="password" id="password" class="form-control form-control-lg" />
+                            <input asp-for="Password" type="password" id="password" class="form-control form-control-lg" />
                             <label class="form-label" for="password">Password</label>
                         </div>
 

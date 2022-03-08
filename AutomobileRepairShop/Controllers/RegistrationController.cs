@@ -9,16 +9,20 @@ namespace AutomobileRepairShop.Controllers
         
 
         [HttpPost]
-        public IActionResult Welcome(User user)
+        public IActionResult Login(User user)
         {
+            // access to the database in order to add a new user
             AutoRSContext db = new AutoRSContext();
+            // idrole==2 means regular user
+            user.IdRole = 2;
+            // password hashing
 
-            string name = user.Name;
-            string surname = user.Surname;
-            string email = user.Email;
-            string password = user.Password;
-            user.Id = 2;
+            // check for email duplicates
+
+
+            // adds user 
             db.Users.Add(user);
+            db.SaveChanges();
             return View();
         }
     }
