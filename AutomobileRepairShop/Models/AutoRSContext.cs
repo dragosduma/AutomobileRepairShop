@@ -59,6 +59,24 @@ namespace AutomobileRepairShop.Models
                 entity.Property(e => e.ClientId).HasColumnName("Client_ID");
 
                 entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.HasOne(d => d.Appointment)
+                    .WithMany(p => p.Bills)
+                    .HasForeignKey(d => d.AppointmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Bill_Appointment");
+
+                entity.HasOne(d => d.Car)
+                    .WithMany(p => p.Bills)
+                    .HasForeignKey(d => d.CarId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Bill_Car");
+
+                entity.HasOne(d => d.Client)
+                    .WithMany(p => p.Bills)
+                    .HasForeignKey(d => d.ClientId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Bill_Client");
             });
 
             modelBuilder.Entity<Car>(entity =>
@@ -96,13 +114,27 @@ namespace AutomobileRepairShop.Models
                 entity.Property(e => e.LaborPrice).HasColumnName("Labor_price");
 
                 entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.CarParts)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CarParts_Department");
             });
 
             modelBuilder.Entity<Client>(entity =>
             {
                 entity.ToTable("Client");
 
-                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("ID");
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.Client)
+                    .HasForeignKey<Client>(d => d.Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Client_User");
             });
 
             modelBuilder.Entity<Department>(entity =>
@@ -123,6 +155,12 @@ namespace AutomobileRepairShop.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.DepartmentId).HasColumnName("Department_ID");
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.Employees)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Employee_Department");
             });
 
             modelBuilder.Entity<Role>(entity =>

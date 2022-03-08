@@ -11,5 +11,9 @@ namespace AutomobileRepairShop.Models
         public double Price { get; set; }
         public int CarId { get; set; }
         public int AppointmentId { get; set; }
+
+        public virtual Appointment Appointment { get; set; } = null!;
+        public virtual Car Car { get; set; } = null!;
+        public virtual Client Client { get; set; } = null!;
     }
 }
