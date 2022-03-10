@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AutomobileRepairShop.Models;
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Diagnostics;
 
 namespace AutomobileRepairShop.Controllers
@@ -22,22 +21,25 @@ namespace AutomobileRepairShop.Controllers
             // generate a 128-bit salt using a cryptographically strong random sequence of nonzero values
             string password = user.Password;
 
-            byte[] salt = new byte[128 / 8];
-            using (var rngCsp = new RNGCryptoServiceProvider())
-            {
-                rngCsp.GetNonZeroBytes(salt);
-            }
-            Console.WriteLine($"Salt: {Convert.ToBase64String(salt)}");
+            string hashPass = string.Empty;
 
-            // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 100000,
-                numBytesRequested: 256 / 8));
+            // 1.-Create the salt value with a cryptographic PRNG
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[20]);
 
-            user.Password = hashed;
+            // 2.-Create the RFC2898DeriveBytes and get the hash value
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000);
+            byte[] hash = pbkdf2.GetBytes(20);
+
+            // 3.-Combine the salt and password bytes for later use
+            byte[] hashBytes = new byte[40];
+            Array.Copy(salt, 0, hashBytes, 0, 20);
+            Array.Copy(hash, 0, hashBytes, 20, 20);
+
+            // 4.-Turn the combined salt+hash into a string for storage
+            hashPass = Convert.ToBase64String(hashBytes);
+
+            user.Password = hashPass;
             
             // check for email duplicates
 
