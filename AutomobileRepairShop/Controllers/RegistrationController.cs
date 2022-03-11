@@ -8,7 +8,10 @@ namespace AutomobileRepairShop.Controllers
     
     public class RegistrationController : Controller
     {
-        
+        public IActionResult Register()
+        {
+            return View();
+        }
 
         [HttpPost]
         public IActionResult Register(User user)

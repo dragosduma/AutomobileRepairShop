@@ -31,12 +31,12 @@ namespace AutomobileRepairShop.Controllers
 
         public IActionResult Login()
         {
-            return View();
+            return RedirectToAction("Login", "Login");
         }
 
         public IActionResult Register()
         {
-            return View();
+            return RedirectToAction("Register","Registration");
         }
 
         public ActionResult Welcome()
