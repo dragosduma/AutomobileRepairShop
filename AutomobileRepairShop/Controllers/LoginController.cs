@@ -5,8 +5,13 @@ using System.Security.Cryptography;
 
 namespace AutomobileRepairShop.Controllers
 {
-    public class LoginnController : Controller
+    public class LoginController : Controller
     {
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         [HttpPost]
         public IActionResult Login(User user)
         {
