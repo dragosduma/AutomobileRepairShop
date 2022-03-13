@@ -28,5 +28,26 @@ namespace AutomobileRepairShop.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Login()
+        {
+            return RedirectToAction("Login", "Login");
+        }
+
+        public IActionResult Register()
+        {
+            return RedirectToAction("Register","Registration");
+        }
+
+        public ActionResult Welcome()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(User obj)
+        {
+            return View(obj);
+        }
     }
 }
