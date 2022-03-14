@@ -20,10 +20,34 @@ namespace AutomobileRepairShop.Controllers
             AutoRSContext db = new AutoRSContext();
             // idrole==2 means regular user
             user.IdRole = 2;
+            
+            // check for email duplicates
 
-            // generate a 128-bit salt using a cryptographically strong random sequence of nonzero values
-            string password = user.Password;
+            User email=db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
+            try
+            {
+                if(email==null)
+                {
+                    user.Password = HashPassword(user.Password);
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    return RedirectToAction("Login","Home");
+                }else
+                {
+                    Debug.WriteLine("Email address already exists");
+                    ViewBag.EmailExists= "Email address already exists";
+                    ViewBag.UserName = user.Name;
+                }
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+            return View();
 
+        }
+        private static string HashPassword(string password)
+        {
             string hashPass = string.Empty;
 
             // 1.-Create the salt value with a cryptographic PRNG
@@ -41,34 +65,7 @@ namespace AutomobileRepairShop.Controllers
 
             // 4.-Turn the combined salt+hash into a string for storage
             hashPass = Convert.ToBase64String(hashBytes);
-
-            user.Password = hashPass;
-            
-            // check for email duplicates
-
-            User email=db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
-            try
-            {
-                if(email==null)
-                {
-                    db.Users.Add(user);
-                    db.SaveChanges();
-                    return RedirectToAction("Login","Home");
-                }else
-                {
-                    Debug.WriteLine("Email address already exists");
-                    ViewBag.EmailExists= "Email address already exists";
-                    ViewBag.UserName = user.Name;
-                }
-            }
-            catch(Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-            }
-            return View();
-            //page link changes, i don't like it :(
-            //tried return RedirectToRoute(new {controller="Home",action="Register" });
-            //but form's textboxes clear
+            return hashPass;
         }
     }
 }
