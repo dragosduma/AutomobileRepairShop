@@ -23,7 +23,7 @@ namespace AutomobileRepairShop.Controllers
             if (user1 == null)
             {
                 ViewBag.EmailNotExists = "Account doesn't exists!";
-                return View("Home");
+                return View();
             }
 
             if (!VerifyPassword(user.Password, user1.Password))
