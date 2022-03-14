@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(0);
         options.LoginPath = "/Login";
         options.Cookie.Name = "userSession";
         //options.SlidingExpiration = true;
