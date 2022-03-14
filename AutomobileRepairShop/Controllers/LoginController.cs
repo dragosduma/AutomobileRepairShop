@@ -44,17 +44,18 @@ namespace AutomobileRepairShop.Controllers
             return Redirect("/");
         }
 
-        private ClaimsIdentity cookieMagic(User user1)
+        private ClaimsIdentity cookieMagic(User user)
         {
+            // fields that the cookie contains using Identity
             var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Email, user1.Email),
-            new Claim(ClaimTypes.Name, user1.Name),
-        };
+            {
+                new Claim(ClaimTypes.Role, Convert.ToString(user.IdRole)),  
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.Name),
+            };
 
             var claimsIdentity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
 
             return claimsIdentity;
         }
