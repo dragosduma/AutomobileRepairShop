@@ -5,6 +5,12 @@ namespace AutomobileRepairShop.Models
 {
     public partial class User
     {
+        public User()
+        {
+            Bills = new HashSet<Bill>();
+            Cars = new HashSet<Car>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
@@ -13,8 +19,11 @@ namespace AutomobileRepairShop.Models
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public int IdRole { get; set; }
+        public int? IdDepartment { get; set; }
 
+        public virtual Department? IdDepartmentNavigation { get; set; }
         public virtual Role IdRoleNavigation { get; set; } = null!;
-        public virtual Client Client { get; set; } = null!;
+        public virtual ICollection<Bill> Bills { get; set; }
+        public virtual ICollection<Car> Cars { get; set; }
     }
 }

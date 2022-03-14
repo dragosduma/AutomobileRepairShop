@@ -15,8 +15,9 @@ namespace AutomobileRepairShop.Models
         public string Model { get; set; } = null!;
         public string ChassisCode { get; set; } = null!;
         public int Kilometers { get; set; }
-        public int IdClient { get; set; }
+        public int IdUser { get; set; }
 
+        public virtual User IdUserNavigation { get; set; } = null!;
         public virtual ICollection<Bill> Bills { get; set; }
     }
 }

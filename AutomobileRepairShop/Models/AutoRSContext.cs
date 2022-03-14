@@ -20,9 +20,7 @@ namespace AutomobileRepairShop.Models
         public virtual DbSet<Bill> Bills { get; set; } = null!;
         public virtual DbSet<Car> Cars { get; set; } = null!;
         public virtual DbSet<CarPart> CarParts { get; set; } = null!;
-        public virtual DbSet<Client> Clients { get; set; } = null!;
         public virtual DbSet<Department> Departments { get; set; } = null!;
-        public virtual DbSet<Employee> Employees { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -31,7 +29,7 @@ namespace AutomobileRepairShop.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-CL48MG8;Database=AutoRS;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=LAPTOP-8DFLJG73;Database=AutoRS;Trusted_Connection=True;");
             }
         }
 
@@ -56,9 +54,9 @@ namespace AutomobileRepairShop.Models
 
                 entity.Property(e => e.CarId).HasColumnName("Car_ID");
 
-                entity.Property(e => e.ClientId).HasColumnName("Client_ID");
-
                 entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.UserId).HasColumnName("User_ID");
 
                 entity.HasOne(d => d.Appointment)
                     .WithMany(p => p.Bills)
@@ -72,11 +70,11 @@ namespace AutomobileRepairShop.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Bill_Car");
 
-                entity.HasOne(d => d.Client)
+                entity.HasOne(d => d.User)
                     .WithMany(p => p.Bills)
-                    .HasForeignKey(d => d.ClientId)
+                    .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Bill_Client");
+                    .HasConstraintName("FK_Bill_User");
             });
 
             modelBuilder.Entity<Car>(entity =>
@@ -94,11 +92,17 @@ namespace AutomobileRepairShop.Models
                     .IsUnicode(false)
                     .HasColumnName("Chassis_code");
 
-                entity.Property(e => e.IdClient).HasColumnName("ID_client");
+                entity.Property(e => e.IdUser).HasColumnName("ID_user");
 
                 entity.Property(e => e.Model)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.IdUserNavigation)
+                    .WithMany(p => p.Cars)
+                    .HasForeignKey(d => d.IdUser)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Car_User");
             });
 
             modelBuilder.Entity<CarPart>(entity =>
@@ -122,21 +126,6 @@ namespace AutomobileRepairShop.Models
                     .HasConstraintName("FK_CarParts_Department");
             });
 
-            modelBuilder.Entity<Client>(entity =>
-            {
-                entity.ToTable("Client");
-
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("ID");
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.Client)
-                    .HasForeignKey<Client>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Client_User");
-            });
-
             modelBuilder.Entity<Department>(entity =>
             {
                 entity.ToTable("Department");
@@ -146,21 +135,6 @@ namespace AutomobileRepairShop.Models
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Employee>(entity =>
-            {
-                entity.ToTable("Employee");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.DepartmentId).HasColumnName("Department_ID");
-
-                entity.HasOne(d => d.Department)
-                    .WithMany(p => p.Employees)
-                    .HasForeignKey(d => d.DepartmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Employee_Department");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -184,6 +158,8 @@ namespace AutomobileRepairShop.Models
 
                 entity.Property(e => e.Email).IsUnicode(false);
 
+                entity.Property(e => e.IdDepartment).HasColumnName("ID_Department");
+
                 entity.Property(e => e.IdRole).HasColumnName("ID_Role");
 
                 entity.Property(e => e.Name).IsUnicode(false);
@@ -191,6 +167,11 @@ namespace AutomobileRepairShop.Models
                 entity.Property(e => e.Password).IsUnicode(false);
 
                 entity.Property(e => e.Surname).IsUnicode(false);
+
+                entity.HasOne(d => d.IdDepartmentNavigation)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.IdDepartment)
+                    .HasConstraintName("FK_User_Department");
 
                 entity.HasOne(d => d.IdRoleNavigation)
                     .WithMany(p => p.Users)
