@@ -1,6 +1,8 @@
 ﻿using AutomobileRepairShop.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace AutomobileRepairShop.Controllers
 {
@@ -15,6 +17,8 @@ namespace AutomobileRepairShop.Controllers
 
         public IActionResult Index()
         {
+            if(this.User.FindFirst(ClaimTypes.Name).Value != null)
+                Debug.WriteLine(this.User.FindFirst(ClaimTypes.Name).Value);
             return View();
         }
 
