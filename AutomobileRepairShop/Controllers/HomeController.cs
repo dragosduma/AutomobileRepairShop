@@ -1,6 +1,8 @@
 ﻿using AutomobileRepairShop.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace AutomobileRepairShop.Controllers
 {
@@ -15,6 +17,12 @@ namespace AutomobileRepairShop.Controllers
 
         public IActionResult Index()
         {
+            //cookie magic x10000 pls dont delete it's holy
+            string cookieValueFromContext = HttpContext.Request.Cookies["userSession"];
+            // ^^^^ holy line do not delete
+            
+            if (cookieValueFromContext != null)
+                Debug.WriteLine("Name:" +this.User.FindFirst(ClaimTypes.Name).Value);
             return View();
         }
 
