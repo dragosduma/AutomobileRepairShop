@@ -1,7 +1,22 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add services for cookie authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(0);
+        options.LoginPath = "/Login";
+        options.Cookie.Name = "userSession";
+        //options.SlidingExpiration = true;
+        //options.AccessDeniedPath = "/Forbidden/";
+    });
+
 
 var app = builder.Build();
 
@@ -18,10 +33,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.UseEndpoints(endpoints =>
+{
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 app.Run();

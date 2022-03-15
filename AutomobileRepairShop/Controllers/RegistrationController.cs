@@ -20,6 +20,7 @@ namespace AutomobileRepairShop.Controllers
             AutoRSContext db = new AutoRSContext();
             // idrole==2 means regular user
             user.IdRole = 2;
+<<<<<<< HEAD
             
             // check for email duplicates
 
@@ -27,10 +28,20 @@ namespace AutomobileRepairShop.Controllers
             try
             {
                 if(email==null)
+=======
+
+            // check for email duplicates
+
+            User email = db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
+            try
+            {
+                if (email == null)
+>>>>>>> 6648fa39247a8067439f33eadba0cfc396cff235
                 {
                     user.Password = HashPassword(user.Password);
                     db.Users.Add(user);
                     db.SaveChanges();
+<<<<<<< HEAD
                     return RedirectToAction("Login","Home");
                 }else
                 {
@@ -40,6 +51,18 @@ namespace AutomobileRepairShop.Controllers
                 }
             }
             catch(Exception ex)
+=======
+                    return RedirectToAction("Login", "Home");
+                }
+                else
+                {
+                    Debug.WriteLine("Email address already exists");
+                    ViewBag.EmailExists = "Email address already exists";
+                    ViewBag.UserName = user.Name;
+                }
+            }
+            catch (Exception ex)
+>>>>>>> 6648fa39247a8067439f33eadba0cfc396cff235
             {
                 Debug.WriteLine(ex.ToString());
             }
