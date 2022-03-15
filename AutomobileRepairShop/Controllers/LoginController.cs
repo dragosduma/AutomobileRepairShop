@@ -16,11 +16,7 @@ namespace AutomobileRepairShop.Controllers
         }
 
         [HttpPost]
-<<<<<<< HEAD
-        public IActionResult Login(User user,string sessionName)
-=======
         public async Task<IActionResult> LoginAsync(User user)
->>>>>>> 6648fa39247a8067439f33eadba0cfc396cff235
         {
             AutoRSContext db = new AutoRSContext();
             User user1 = db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
@@ -30,17 +26,6 @@ namespace AutomobileRepairShop.Controllers
                 return View();
             }
 
-<<<<<<< HEAD
-            if (!VerifyPassword(user.Password,user1.Password))
-            {
-                ViewBag.WrongPassword = "Wrong password";
-                return View();
-            }else
-            {
-                Debug.WriteLine("Hello " + user1.Name + " " + user1.Surname);
-            }
-            return View();
-=======
             if (!VerifyPassword(user.Password, user1.Password))
             {
                 ViewBag.WrongPassword = "Wrong password ****!";
@@ -73,7 +58,6 @@ namespace AutomobileRepairShop.Controllers
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             return claimsIdentity;
->>>>>>> 6648fa39247a8067439f33eadba0cfc396cff235
         }
 
         private static bool VerifyPassword(string loginPassword, string dbPassword)
