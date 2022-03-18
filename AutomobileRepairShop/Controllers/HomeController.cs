@@ -57,5 +57,15 @@ namespace AutomobileRepairShop.Controllers
         {
             return View(obj);
         }
+
+        public ActionResult AddEmployee()
+        {
+            return View();
+        }
+
+        public ActionResult EditAccounts()
+        {
+            return View();
+        }
     }
 }
