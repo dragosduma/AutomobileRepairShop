@@ -1,4 +1,4 @@
-﻿@model AutomobileRepairShop.Models.User
+﻿@model List<AutomobileRepairShop.Models.User>
 
 @{
     <!DOCTYPE html>
@@ -31,18 +31,20 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach (var item in Model){
                                 <tr>
-                                    <th scope="row"></th>
-                                    <th scope="row"></th>
-                                    <th scope="row"></th>
-                                    <th scope="row"></th>
-                                    <th scope="row"></th>
-                                    <th scope="row"></th>
-                                    <th scope="row"></th>
-                                    <th scope="row"></th>
+                                    <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Surname)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Birthday)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.IdRole)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.IdDepartment)</td>
                                     <td><button type="button" class="btn btn-outline-danger">Delete</button></td>
                                     <td><button type="button" class="btn btn-outline-info">Edit</button</td> 
                                 </tr>
+                                }
                             </tbody>
                         </table>
 

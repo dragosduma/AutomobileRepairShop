@@ -9,7 +9,7 @@ namespace AutomobileRepairShop.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        private AutoRSContext db = new AutoRSContext();
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -65,7 +65,7 @@ namespace AutomobileRepairShop.Controllers
 
         public ActionResult EditAccounts()
         {
-            return View();
+            return View(db.Users.ToList());
         }
     }
 }
