@@ -28,7 +28,7 @@ namespace AutomobileRepairShop.Controllers
 
             if (!VerifyPassword(user.Password, user1.Password))
             {
-                ViewBag.WrongPassword = "Wrong password ****!";
+                ViewBag.WrongPassword = "Wrong password!";
                 return View();
             }
             else

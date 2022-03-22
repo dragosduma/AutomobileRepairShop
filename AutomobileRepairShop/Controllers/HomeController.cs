@@ -21,8 +21,8 @@ namespace AutomobileRepairShop.Controllers
             string cookieValueFromContext = HttpContext.Request.Cookies["userSession"];
             // ^^^^ holy line do not delete
             
-            //if (cookieValueFromContext != null)
-            //    Debug.WriteLine("Name:" +this.User.FindFirst(ClaimTypes.Name).Value);
+            if (cookieValueFromContext != null)
+                Debug.WriteLine("Name:" +this.User.FindFirst(ClaimTypes.Name).Value);
             return View();
         }
 
