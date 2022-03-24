@@ -72,5 +72,10 @@ namespace AutomobileRepairShop.Controllers
         {
             return View();
         }
+
+        public ActionResult Appointments()
+        {
+            return View();
+        }
     }
 }
