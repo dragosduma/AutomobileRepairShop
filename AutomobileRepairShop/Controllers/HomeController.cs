@@ -54,9 +54,9 @@ namespace AutomobileRepairShop.Controllers
             // claym contains the role of the logged in user
             
                 var claym = loggedInUser.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
-            if(claym != null)
-                if (claym.Value.ToString() == "Administrator")
-                    isAdmin = true;
+                if(claym != null)
+                    if (claym.Value.ToString() == "Administrator")
+                        isAdmin = true;
 
             return isAdmin;
         }
@@ -88,7 +88,7 @@ namespace AutomobileRepairShop.Controllers
         public ActionResult AddEmployee()
         {
             ViewBag.IsLogged = IsLogged();
-            ViewBag.IsAdmin = IsAdmin();
+            ViewBag.IsAdmin = IsAdmin();    //unnecessary
             Debug.WriteLine(ViewBag.IsAdmin.ToString() as string);
             return View();
         }
@@ -187,6 +187,17 @@ namespace AutomobileRepairShop.Controllers
                 }
             }
             return true;
+        }
+
+        // LOGOUT RELATED METHODS
+        public async Task<IActionResult> LogoutAsync()
+        {
+            if (Request.Cookies["userSession"] != null)
+            {
+                Response.Cookies.Delete("userSession");
+            }
+            Debug.WriteLine(SignOut().ToString() as string);
+            return Redirect("/");
         }
 
         // REGISTRATION RELATED METHODS

@@ -28,15 +28,21 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         
                         <!--Admin dashboard-->  
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Admin dashboard
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-controller="Home" asp-action="AddEmployee">Add employee</a></li>
-                                <li><a class="dropdown-item" asp-controller="Home" asp-action="EditAccounts">Edit existing accounts</a></li>
-                            </ul>
-                        </li>
+                        @if (@ViewBag.IsLogged == true)
+                            {
+                                @if (@ViewBag.IsAdmin == true)
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Admin dashboard
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li><a class="dropdown-item" asp-controller="Home" asp-action="AddEmployee">Add employee</a></li>
+                                            <li><a class="dropdown-item" asp-controller="Home" asp-action="EditAccounts">Edit existing accounts</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                            }
                     </ul>
                     <ul class="navbar-nav ms-auto flex-nowrap">
 
@@ -47,7 +53,7 @@
                             <li class="nav-item"><a id="register" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Register</a></li>
                         }
                         else @if(@ViewBag.IsLogged == true){ //Logout
-                        <li class="nav-item"><a id="logout" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Logout</a></li>
+                        <li class="nav-item"><a id="logout" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
                         }
                     </ul>
 
@@ -68,7 +74,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
