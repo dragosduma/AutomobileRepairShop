@@ -105,7 +105,7 @@ namespace AutomobileRepairShop.Controllers
         // LOGIN RELATED METHODS
         public IActionResult Login()
         {
-
+            ViewBag.IsLogged = IsLogged();
             return View();
         }
 
@@ -204,6 +204,7 @@ namespace AutomobileRepairShop.Controllers
 
         public IActionResult Register()
         {
+            ViewBag.IsLogged = IsLogged();
             return View();
         }
 
