@@ -67,5 +67,10 @@ namespace AutomobileRepairShop.Controllers
         {
             return View(db.Users.ToList());
         }
+
+        public ActionResult Bills()
+        {
+            return View();
+        }
     }
 }
