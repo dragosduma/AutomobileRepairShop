@@ -263,5 +263,15 @@ namespace AutomobileRepairShop.Controllers
             hashPass = Convert.ToBase64String(hashBytes);
             return hashPass;
         }
+
+        public ActionResult Bills()
+        {
+            return View();
+        }
+
+        public ActionResult Appointments()
+        {
+            return View();
+        }
     }
 }
