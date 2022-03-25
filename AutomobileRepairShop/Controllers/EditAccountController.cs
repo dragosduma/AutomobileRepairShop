@@ -11,17 +11,16 @@ namespace AutomobileRepairShop.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditAccount (User user)
         {
-            //AutoRSContext db = new AutoRSContext();
-            //User u=db.Users.FirstOrDefault(x => x.Id == user.Id);
-            Debug.WriteLine("Id: "+ user.Id);
-            return RedirectToAction("EditAccounts","Home");
-        }
-        [HttpGet]
-        public IActionResult DeleteAccount(int id)
-        {
             AutoRSContext db = new AutoRSContext();
-            User u = db.Users.FirstOrDefault(x => x.Id == id);
-            return PartialView("EditAccounts",u);
+            User u=db.Users.FirstOrDefault(x => x.Id == user.Id);
+            if(user.Surname!=null)u.Surname = user.Surname;
+            if(user.Name != null) u.Name = user.Name;
+            if(user.Email!=null) u.Email= user.Email;
+            if(user.Address!=null) u.Address = user.Address;
+            if(user.Birthday!=null) u.Birthday = user.Birthday;
+            Debug.WriteLine("Name: "+ user.Name+" "+u.Name);
+            db.SaveChanges();
+            return RedirectToAction("EditAccounts","Home");
         }
 
         [HttpPost]
@@ -30,6 +29,7 @@ namespace AutomobileRepairShop.Controllers
         {
             AutoRSContext db = new AutoRSContext();
             db.Remove(user);
+            Debug.WriteLine("User " + user.Name + " removed");
             db.SaveChanges();
             return RedirectToAction("EditAccounts", "Home");
         }
