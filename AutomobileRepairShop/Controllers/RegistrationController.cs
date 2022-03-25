@@ -14,12 +14,46 @@ namespace AutomobileRepairShop.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Register(User user)
         {
             // access to the database in order to add a new user
             AutoRSContext db = new AutoRSContext();
             // idrole==2 means regular user
             user.IdRole = 2;
+            
+            // check for email duplicates
+
+            User email=db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
+            try
+            {
+                if (email == null)
+                {
+                    user.Password = HashPassword(user.Password);
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    return RedirectToAction("Login","Home");
+                }else
+                {
+                    Debug.WriteLine("Email address already exists");
+                    ViewBag.EmailExists= "Email address already exists";
+                    ViewBag.UserName = user.Name;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+            return View();
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddEmployee(User user)
+        {
+            AutoRSContext db = new AutoRSContext();
+            user.IdRole = 3;
 
             // check for email duplicates
 
@@ -31,7 +65,7 @@ namespace AutomobileRepairShop.Controllers
                     user.Password = HashPassword(user.Password);
                     db.Users.Add(user);
                     db.SaveChanges();
-                    return RedirectToAction("Login", "Home");
+                    return RedirectToAction("EditAccounts", "Home");
                 }
                 else
                 {
@@ -45,7 +79,6 @@ namespace AutomobileRepairShop.Controllers
                 Debug.WriteLine(ex.ToString());
             }
             return View();
-
         }
         private static string HashPassword(string password)
         {

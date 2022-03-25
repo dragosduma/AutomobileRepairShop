@@ -73,7 +73,7 @@
                                 <div class="modal-body">
 
                                     <!-- edit form -->
-                                    <form asp-controller="Edit" asp-action="Edit" method="post" style="width: 23rem;">
+                                    <form id="editform" asp-controller="EditAccount" asp-action="EditAccount" method="post" style="width: 23rem;">
 
                                         <div class="form-outline mb-4">
                                             <input name="Id" type="name" for="id"
@@ -125,7 +125,7 @@
                                             data-bs-dismiss="modal">
                                         Close
                                     </button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="submit" form="editform" class="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
                         </div>
@@ -137,17 +137,17 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <div class="form-outline mb-4">
+                                    <form id="deleteform" asp-controller="EditAccount" asp-action="DeleteAccount" method="post" class="form-outline mb-4">
                                         <input name="Id" type="name" for="id"
                                                class="form-control form-control-lg" />
                                         <label class="form-label" for="id">User Id</label>
-                                    </div>
+                                    </form>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary">Delete</button>
+                                    <button type="submit" form="deleteform" class="btn btn-primary">Delete</button>
                                 </div>
                             </div>
                         </div>
