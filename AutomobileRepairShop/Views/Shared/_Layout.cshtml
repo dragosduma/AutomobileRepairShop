@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AutomobileRepairShop.styles.css" asp-append-version="true" />
-    
+
 </head>
 <body>
     <header>
@@ -26,21 +26,25 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        
-                        <!--Admin dashboard-->  
-                        @if (@ViewBag.IsLogged == true)
+
+                            <!--Admin dashboard-->
+                            @if (@ViewBag.IsLogged == true)
                             {
                                 @if (@ViewBag.IsAdmin == true)
                                 {
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Admin dashboard
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a class="dropdown-item" asp-controller="Home" asp-action="AddEmployee">Add employee</a></li>
-                                            <li><a class="dropdown-item" asp-controller="Home" asp-action="EditAccounts">Edit existing accounts</a></li>
-                                        </ul>
-                                    </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Admin dashboard
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" asp-controller="Home" asp-action="AddEmployee">Add employee</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Home" asp-action="EditAccounts">Edit existing accounts</a></li>
+                                    </ul>
+                                </li>
+                                }
+                                else if (@ViewBag.IsEmployee == true)
+                                {
+                                    <li class="nav-item"><a id="bill" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Bills">Create bill</a></li>
                                 }
                             }
                     </ul>
@@ -52,11 +56,11 @@
                             <li class="nav-item"><a id="login" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
                             <li class="nav-item"><a id="register" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Register</a></li>
                         }
-                        else @if(@ViewBag.IsLogged == true){ //Logout
-                        <li class="nav-item"><a id="logout" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                        else @if (@ViewBag.IsLogged == true)
+                        { //Logout
+                            <li class="nav-item"><a id="logout" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
                         }
                     </ul>
-
                 </div>
             </div>
         </nav>
@@ -74,7 +78,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
