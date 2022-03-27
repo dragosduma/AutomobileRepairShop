@@ -27,6 +27,7 @@ namespace AutomobileRepairShop.Controllers
             Debug.WriteLine(ViewBag.IsLogged.ToString() as string);
             ViewBag.IsAdmin = IsAdmin();
             Debug.WriteLine(ViewBag.IsAdmin.ToString() as string);
+            ViewBag.IsEmployee = IsEmployee();
             return View();
         }
 
@@ -59,6 +60,19 @@ namespace AutomobileRepairShop.Controllers
                         isAdmin = true;
 
             return isAdmin;
+        }
+
+        public bool IsEmployee()
+        {
+            bool isEmployee = false;
+            ClaimsPrincipal loggedInUser = HttpContext.User;
+
+            var claym = loggedInUser.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+            if (claym != null)
+                if (claym.Value.ToString() == "Employee")
+                    isEmployee = true;
+
+            return isEmployee;
         }
 
         public IActionResult Privacy()
@@ -330,9 +344,12 @@ namespace AutomobileRepairShop.Controllers
             return RedirectToAction("EditAccounts", "Home");
         }
 
+        [Authorize(Roles = "Employee")]
         public ActionResult Bills()
         {
-            return View();
+            ViewBag.IsLogged = IsLogged();
+            ViewBag.IsEmployee = IsEmployee();
+            return View(db.CarParts.ToList());
         }
 
         public ActionResult Appointments()
