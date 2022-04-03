@@ -37,14 +37,14 @@
                                         Admin dashboard
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a class="dropdown-item" asp-controller="Home" asp-action="AddEmployee">Add employee</a></li>
-                                        <li><a class="dropdown-item" asp-controller="Home" asp-action="EditAccounts">Edit existing accounts</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="AddEmployee">Add employee</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="EditAccounts">Edit existing accounts</a></li>
                                     </ul>
                                 </li>
                                 }
                                 else if (@ViewBag.IsEmployee == true)
                                 {
-                                    <li class="nav-item"><a id="bill" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Bills">Create bill</a></li>
+                                    <li class="nav-item"><a id="bill" class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Bills">Create bill</a></li>
                                 }
                             }
                     </ul>
@@ -53,12 +53,12 @@
                         <!--Login, Register, Logout-->
                         @if (@ViewBag.IsLogged == false) //Login Register
                         {
-                            <li class="nav-item"><a id="login" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
-                            <li class="nav-item"><a id="register" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Register</a></li>
+                            <li class="nav-item"><a id="login" class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Login">Login</a></li>
+                            <li class="nav-item"><a id="register" class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Register">Register</a></li>
                         }
                         else @if (@ViewBag.IsLogged == true)
                         { //Logout
-                            <li class="nav-item"><a id="logout" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                            <li class="nav-item"><a id="logout" class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
                         }
                     </ul>
                 </div>
