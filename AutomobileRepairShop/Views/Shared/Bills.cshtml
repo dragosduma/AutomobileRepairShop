@@ -31,10 +31,14 @@
                             <td>$@Html.DisplayFor(modelItem => item.Price)</td>
                             <td>@Html.DisplayFor(modelItem => item.LaborName)</td>
                             <td>$@Html.DisplayFor(modelItem => item.LaborPrice)</td>
-                            <td><button type="button" class="btn btn-outline-info">Add</button></td>
+                            <td><button type="button" class="btn btn-outline-info" id = "addBtn">Add</button></td>
                         </tr>
                     }
                 </tbody>
+                </table>
+                <div class = "d-flex justify-content-center mt-2">
+                    <ul class = "pagination"></ul>
+                </div>
         </div>
         <script>
             $(document).ready(function(){
