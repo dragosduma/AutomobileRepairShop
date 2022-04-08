@@ -56,21 +56,24 @@
             } );
         </script>
         <script >
+            var list=[];
             $('.btn').click(function(){
+                //var itemId={Id: $(this).attr('itemid')};
                 var itemId=$(this).attr('itemid');
-                var formData=new FormData();
-                formData.append("ItemId",itemId);
-
+                list.push(parseInt(itemId));
+                var dataToPost=JSON.stringify(list);
+                console.log(dataToPost);
                 $.ajax({
                     async: true,
                     type: 'POST',
-                    contentType: false,
-                    processData: false,
-                    data: formData,
+                    datatype: 'JSON',
+                    contentType: 'application/json; charset=utf-8',
+                    data: dataToPost,
+                    traditional: true,
                     url: '/Employee/Bills',
                     success: function(data) {
                         if(data.success){
-                            $("#cartItem").text("Cart("+data.Counter+")");
+                            
                         }
                     },
                     error: function() {
