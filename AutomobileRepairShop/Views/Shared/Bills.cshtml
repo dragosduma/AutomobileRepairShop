@@ -31,10 +31,11 @@
                             <td>$@Html.DisplayFor(modelItem => item.Price)</td>
                             <td>@Html.DisplayFor(modelItem => item.LaborName)</td>
                             <td>$@Html.DisplayFor(modelItem => item.LaborPrice)</td>
-                            <td><button type="button" class="btn btn-outline-info">Add</button></td>
+                            <td><button type="button" class="btn btn-outline-info" itemid="@item.Id" id="btnAddToCart" >Add</button></td>
                         </tr>
                     }
                 </tbody>
+
         </div>
         <script>
             $(document).ready(function(){
@@ -44,6 +45,30 @@
                   $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
               });
+            });
+        </script>
+        <script >
+            $('.btn').click(function(){
+                var itemId=$(this).attr('itemid');
+                var formData=new FormData();
+                formData.append("ItemId",itemId);
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    url: '/Employee/Bills',
+                    success: function(data) {
+                        if(data.success){
+                            $("#cartItem").text("Cart("+data.Counter+")");
+                        }
+                    },
+                    error: function() {
+                        alert("There is some problem.");
+                    }
+                });
             });
         </script>
     </body>
