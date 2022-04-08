@@ -17,6 +17,9 @@ namespace AutomobileRepairShop.Controllers
             ViewBag.IsEmployee = IsEmployee();
             return View(db.CarParts.ToList());
         }
+<<<<<<< HEAD
+
+=======
         [HttpPost]
         public JsonResult Bills(string ItemId)
         {
@@ -31,5 +34,6 @@ namespace AutomobileRepairShop.Controllers
         {
             return View();
         }
+>>>>>>> e06d4e4f09b48cb0c868a06002dc8e0a29c847c2
     }
 }
