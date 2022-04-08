@@ -63,10 +63,6 @@ namespace AutomobileRepairShop.Controllers
             return View();
         }
 
-
-
-        
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditAccount(User user)
