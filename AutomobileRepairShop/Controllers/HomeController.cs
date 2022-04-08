@@ -56,5 +56,13 @@ namespace AutomobileRepairShop.Controllers
             return View(obj);
         }
 
+        
+        [Authorize(Roles = "Customer")]
+        public ActionResult Appointments(AppointClasses appointClasses)
+        {
+            ViewBag.IsLogged = IsLogged();
+            return View(appointClasses);
+        }
+
     }
 }

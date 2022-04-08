@@ -15,9 +15,5 @@ namespace AutomobileRepairShop.Controllers
             return View(db.CarParts.ToList());
         }
 
-        public ActionResult Appointments()
-        {
-            return View();
-        }
     }
 }
