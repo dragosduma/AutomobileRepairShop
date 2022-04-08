@@ -17,7 +17,7 @@
 
                             <!-- Name input & label -->
                             <div class="form-outline mb-4">
-                                <input asp-for="Name" type="name" for="name" class="form-control form-control-lg" />
+                                <input asp-for="Name" type="name" for="name" class="form-control form-control-lg" required/>
                                 <label class="form-label" for="name">Name</label>
                             </div>
 
@@ -29,26 +29,26 @@
 
                             <!-- Surname input & label -->
                             <div class="form-outline mb-4">
-                                <input asp-for="Surname" type="surname" id="surname" class="form-control form-control-lg" />
+                                <input asp-for="Surname" type="surname" id="surname" class="form-control form-control-lg" required/>
                                 <label class="form-label" for="surname">Surname</label>
                             </div>
 
                             <!-- Address input & label -->
                             <div class="form-outline mb-4">
-                                <input asp-for="Address" type="address" id="address" class="form-control form-control-lg" />
+                                <input asp-for="Address" type="address" id="address" class="form-control form-control-lg" required/>
                                 <label class="form-label" for="address">Address</label>
                             </div>
 
                             <!-- Birthday input & label -->
                             <div class="form-outline mb-4">
-                                <input asp-for="Birthday" type="date" id="birthday" class="form-control form-control-lg" />
+                                <input asp-for="Birthday" type="date" id="birthday" class="form-control form-control-lg" required/>
                                 <label class="form-label" for="birthday">Birthday</label>
                             </div>
 
                             <!-- Email input & label -->
                             <div class="form-outline mb-4">
                                 @ViewBag.EmailExists  <!-- To customise -->
-                                <input asp-for="Email" type="email" id="email" class="form-control form-control-lg" />
+                                <input asp-for="Email" type="email" id="email" class="form-control form-control-lg" required/>
                                 <label class="form-label" for="email">Email address</label>
                             </div>
 

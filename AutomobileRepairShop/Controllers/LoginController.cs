@@ -20,7 +20,10 @@ namespace AutomobileRepairShop.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginAsync(User user)
         {
+            if (user.Email == null || user.Password == null) return View();
+
             AutoRSContext db = new AutoRSContext();
+            
             User user1 = db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
             if (user1 == null)
             {
