@@ -50,11 +50,23 @@
                         <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
                         
                     </tr>
                 </thead>
                 <tbody id="partTable1">
-                    
+                    @foreach (CarPart item in Model.AddedCarParts)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                            <td>@Html.DisplayFor(modelItem => item.DepartmentId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>$@Html.DisplayFor(modelItem => item.Price)</td>
+                            <td>@Html.DisplayFor(modelItem => item.LaborName)</td>
+                            <td>$@Html.DisplayFor(modelItem => item.LaborPrice)</td>
+                            <td></td>
+                        </tr>
+                    }
                 </tbody>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
