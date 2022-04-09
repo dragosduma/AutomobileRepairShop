@@ -8,7 +8,7 @@ namespace AutomobileRepairShop.Controllers
     public class EmployeeController : ControllerBase
     {
         private AutoRSContext db = new AutoRSContext();
-        private CarPart carPartsList = new CarPart();
+        private List<CarPart> carPartsList = new List<CarPart>();
 
         [Authorize(Roles = "Employee")]
         public ActionResult Bills()
@@ -17,23 +17,20 @@ namespace AutomobileRepairShop.Controllers
             ViewBag.IsEmployee = IsEmployee();
             return View(db.CarParts.ToList());
         }
-<<<<<<< HEAD
 
-=======
         [HttpPost]
         public JsonResult Bills(string ItemId)
         {
             CarPart carPart = db.CarParts.Single(model => model.Id.ToString() == ItemId);
-            carPartsList.partsList.Add(carPart);
-            foreach(CarPart cp in carPartsList.partsList) {
+            carPartsList.Add(carPart);
+            foreach(CarPart cp in carPartsList) {
                 Debug.WriteLine(cp.Name);
             }
-            return Json(new {success=true,Counter=carPartsList.partsList.Count});
+            return Json(new {success=true,Counter=carPartsList.Count});
         }
         public ActionResult Appointments()
         {
             return View();
         }
->>>>>>> e06d4e4f09b48cb0c868a06002dc8e0a29c847c2
     }
 }
