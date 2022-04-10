@@ -33,6 +33,18 @@ namespace AutomobileRepairShop.Controllers
             Debug.WriteLine("");
             return Json(new { success = true });
         }
+        [HttpPost]
+        public ActionResult CreateBills([FromBody] List<CarPart> array)
+        {
+            foreach (CarPart cp in array)
+            {
+                CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
+               
+                Debug.Write(carPart.Id + " ");
+            }
+            Debug.WriteLine("");
+            return RedirectToAction("Bills","Employee") ;
+        }
         public ActionResult Appointments()
         {
             return View();

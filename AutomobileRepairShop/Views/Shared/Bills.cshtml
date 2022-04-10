@@ -39,19 +39,18 @@
                     }
                 </tbody>
         </div>
-
+         
         <div class="container-fluid">
             <table class="table table-striped table-hover" id="myTable1">
                 <thead>
                     <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">DepartmentID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Labour Description</th>
+                        <th scope="col">Labour Price</th>
                         <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        
                     </tr>
                 </thead>
                 <tbody id="partTable1">
@@ -132,7 +131,24 @@
                 cell.append($(this).attr('itemlaborprice'));
 
             });
+            function createbillfunction(){
+                if(list.length<1){
+                    alert("null");
+                }else 
+                {
+                    var dataToPost=JSON.stringify(list);
+                    $.ajax({
+                        async: true,
+                        type: 'POST',
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        data: dataToPost,
+                        url: '/Employee/CreateBills',
+                    });
+                }
+            }
         </script>
+        <button type="button" onclick="createbillfunction()">Create bill</button>
     </body>
     </html>
 }
