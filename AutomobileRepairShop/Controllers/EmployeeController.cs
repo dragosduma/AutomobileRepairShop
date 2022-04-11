@@ -11,6 +11,10 @@ namespace AutomobileRepairShop.Controllers
         private AutoRSContext db = new AutoRSContext();
 
         private List<CarPart> carParts = new List<CarPart>();
+        private List<User> users = new List<User>();
+        private List<Appointment> appointments = new List<Appointment>();
+        private List<Appointment> appointList = new List<Appointment>();
+        private List<Car> carsList = new List<Car>();
         private dynamic mymodel = new ExpandoObject();
 
         [Authorize(Roles = "Employee")]
@@ -20,6 +24,7 @@ namespace AutomobileRepairShop.Controllers
             ViewBag.IsEmployee = IsEmployee();   
             mymodel.CarParts = db.CarParts.ToList();
             mymodel.AddedCarParts = carParts;
+            mymodel.AppointList = appointList;
 ;           return View(mymodel);
         }
         
@@ -54,5 +59,40 @@ namespace AutomobileRepairShop.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+
+        public ActionResult SearchEmail([FromBody] User userMail)
+        {
+            users = db.Users.ToList();
+            appointments = db.Appointments.ToList();
+
+            Debug.WriteLine("SearchEmail entered");
+            Debug.WriteLine(userMail.Email);
+            foreach(User u in users)
+            {
+                if (u.Email == userMail.Email)
+                {
+                    Debug.WriteLine("User gasit");
+                    int idUser = u.Id;
+                    foreach(Appointment app in appointments)
+                    {
+                        if(app.IdUser == idUser && app.Finished == false)
+                        {
+                            appointList.Add(app);
+                            Debug.Write("App gasit");
+                        }
+                    }
+
+                }
+            }
+            foreach(Appointment app in appointList)
+            {
+                Debug.Write("App gasit" + app.Id + " " + app.IdCar + " " + app.IdUser);
+            }
+            mymodel.AppointList = appointList;
+            return RedirectToAction("Bills","Employee");
+        }
+     
     }
 }
