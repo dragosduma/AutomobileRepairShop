@@ -32,7 +32,6 @@ namespace AutomobileRepairShop.Models
 
                 optionsBuilder.UseSqlServer("Server=DESKTOP-TGS32NS;Database=AutoRS;Trusted_Connection=True;");
 
-                
             }
         }
 

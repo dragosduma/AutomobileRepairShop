@@ -2,31 +2,53 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Dynamic;
 
 namespace AutomobileRepairShop.Controllers
 {
     public class EmployeeController : ControllerBase
     {
         private AutoRSContext db = new AutoRSContext();
-        private List<CarPart> carPartsList = new List<CarPart>();
+
+        private List<CarPart> carParts = new List<CarPart>();
+        private dynamic mymodel = new ExpandoObject();
 
         [Authorize(Roles = "Employee")]
         public ActionResult Bills()
         {
             ViewBag.IsLogged = IsLogged();
-            ViewBag.IsEmployee = IsEmployee();
-            return View(db.CarParts.ToList());
+            ViewBag.IsEmployee = IsEmployee();   
+            mymodel.CarParts = db.CarParts.ToList();
+            mymodel.AddedCarParts = carParts;
+;           return View(mymodel);
+        }
+        
+        [HttpPost]
+        public JsonResult BillsAdd([FromBody]List<CarPart> array)
+        {
+            foreach (CarPart cp in array)
+            {
+                CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
+                carParts.Add(carPart);
+                Debug.Write(carPart.Id+" ");
+            }
+            Debug.WriteLine("");
+            return Json(new { success = true });
         }
 
         [HttpPost]
-        public JsonResult Bills(string ItemId)
+        public ActionResult CreateBills([FromBody] List<CarPart> array)
         {
-            CarPart carPart = db.CarParts.Single(model => model.Id.ToString() == ItemId);
-            carPartsList.Add(carPart);
-            foreach(CarPart cp in carPartsList) {
-                Debug.WriteLine(cp.Name);
+
+            foreach (CarPart cp in array)
+            {
+                CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
+               
+                Debug.Write(carPart.Id + " ");
             }
-            return Json(new {success=true,Counter=carPartsList.Count});
+            Debug.WriteLine("");
+            return RedirectToAction("Bills","Employee") ;
+
         }
         public ActionResult Appointments()
         {
