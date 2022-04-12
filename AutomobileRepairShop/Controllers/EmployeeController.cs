@@ -12,7 +12,8 @@ namespace AutomobileRepairShop.Controllers
         private List<CarPart> carParts = new List<CarPart>();
         private List<User> users = new List<User>();
         private List<Appointment> appointments = new List<Appointment>();
-        private List<Appointment> appointList = new List<Appointment>();
+        private static List<Appointment> appointList = new List<Appointment>();
+        private static List<AppointClasses> appointClasses = new List<AppointClasses>();
         private List<Car> carsList = new List<Car>();
         private dynamic mymodel = new ExpandoObject();
 
@@ -20,11 +21,11 @@ namespace AutomobileRepairShop.Controllers
         public ActionResult Bills()
         {
             ViewBag.IsLogged = IsLogged();
-            ViewBag.IsEmployee = IsEmployee();   
+            ViewBag.IsEmployee = IsEmployee();
             mymodel.CarParts = db.CarParts.ToList();
             mymodel.AddedCarParts = carParts;
             mymodel.AppointList = appointList;
-;           return View(mymodel);
+            ; return View(mymodel);
         }
 
         [Authorize(Roles = "Employee")]
@@ -34,18 +35,19 @@ namespace AutomobileRepairShop.Controllers
             ViewBag.IsEmployee = IsEmployee();
             mymodel.CarParts = db.CarParts.ToList();
             mymodel.AddedCarParts = carParts;
-            mymodel.AppointList = appointList;
+            mymodel.AppointList = appointClasses;
+            Debug.WriteLine("CarParts Method");
             return View(mymodel);
         }
 
         [HttpPost]
-        public JsonResult BillsAdd([FromBody]List<CarPart> array)
+        public JsonResult BillsAdd([FromBody] List<CarPart> array)
         {
             foreach (CarPart cp in array)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
                 carParts.Add(carPart);
-                Debug.Write(carPart.Id+" ");
+                Debug.Write(carPart.Id + " ");
             }
             Debug.WriteLine("");
             return Json(new { success = true });
@@ -57,11 +59,11 @@ namespace AutomobileRepairShop.Controllers
             foreach (CarPart cp in array)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
-               
+
                 Debug.Write(carPart.Id + " ");
             }
             Debug.WriteLine("");
-            return RedirectToAction("Bills","Employee") ;
+            return RedirectToAction("Bills", "Employee");
         }
 
         public ActionResult Appointments()
@@ -77,29 +79,21 @@ namespace AutomobileRepairShop.Controllers
 
             Debug.WriteLine("SearchEmail entered");
             Debug.WriteLine(userMail.Email);
-            foreach(User u in users)
-            {
-                if (u.Email == userMail.Email)
-                {
-                    Debug.WriteLine("User gasit");
-                    int idUser = u.Id;
-                    foreach(Appointment app in appointments)
-                    {
-                        if(app.IdUser == idUser && app.Finished == false)
-                        {
-                            appointList.Add(app);
-                            Debug.Write("App gasit");
-                        }
-                    }
+            User u = db.Users.Single(model => model.Email == userMail.Email);
 
+            Debug.WriteLine("User gasit");
+
+            foreach (Appointment app in appointments)
+            {
+                if (app.IdUser == u.Id && app.Finished == false)
+                {
+                    Car car = db.Cars.Single(model => model.Id == app.IdCar);
+                    AppointClasses thisapp = new AppointClasses(app, car, u);
+                    appointClasses.Add(thisapp);
+                    Debug.Write("App gasit:" + thisapp.User.Name + " " + thisapp.Car.Brand + " " + thisapp.Appointment.Date);
                 }
             }
-            foreach(Appointment app in appointList)
-            {
-                Debug.Write("App gasit" + app.Id + " " + app.IdCar + " " + app.IdUser);
-            }
-            mymodel.AppointList = appointList;
-            return RedirectToAction("Bills","Employee");
-        }     
+            return new EmptyResult();
+        }
     }
 }

@@ -11,12 +11,16 @@
     </head>
     <body>
 
-            <div class="container-fluid" id="appDrop">
-            <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuBtn1" data-bs-toggle="dropdown" aria-expanded="false">See appointments</button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuBtn1">
-                @foreach (Appointment item in Model.AppointList)
+        
+
+         <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                @foreach (AppointClasses item in Model.AppointList)
                 {
-                    <li><a class="drowpdown-item" href="#"></a>@Html.DisplayFor(modelItem => item.Id) @Html.DisplayFor(modelItem => item.IdUser)</li>
+                    <li><button class="drowpdown-item" type = "button">@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.User.Name) @Html.DisplayFor(modelItem => item.Appointment.Date)</button></li>
                 }
             </ul>
         </div>
@@ -86,7 +90,7 @@
         </script>
         <script>
             var list=[];
-            $('.btn').click(function(){
+            $('.btn-outline-info').click(function(){
                 var itemId={Id: parseInt($(this).attr('itemid'))};
                 //var itemId=$(this).attr('itemid');
                 //list.push(parseInt(itemId));
