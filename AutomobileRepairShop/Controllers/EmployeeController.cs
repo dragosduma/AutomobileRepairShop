@@ -9,7 +9,6 @@ namespace AutomobileRepairShop.Controllers
     public class EmployeeController : ControllerBase
     {
         private AutoRSContext db = new AutoRSContext();
-
         private List<CarPart> carParts = new List<CarPart>();
         private List<User> users = new List<User>();
         private List<Appointment> appointments = new List<Appointment>();
@@ -27,7 +26,18 @@ namespace AutomobileRepairShop.Controllers
             mymodel.AppointList = appointList;
 ;           return View(mymodel);
         }
-        
+
+        [Authorize(Roles = "Employee")]
+        public ActionResult CarParts()
+        {
+            ViewBag.IsLogged = IsLogged();
+            ViewBag.IsEmployee = IsEmployee();
+            mymodel.CarParts = db.CarParts.ToList();
+            mymodel.AddedCarParts = carParts;
+            mymodel.AppointList = appointList;
+            return View(mymodel);
+        }
+
         [HttpPost]
         public JsonResult BillsAdd([FromBody]List<CarPart> array)
         {
@@ -44,7 +54,6 @@ namespace AutomobileRepairShop.Controllers
         [HttpPost]
         public ActionResult CreateBills([FromBody] List<CarPart> array)
         {
-
             foreach (CarPart cp in array)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
@@ -53,15 +62,14 @@ namespace AutomobileRepairShop.Controllers
             }
             Debug.WriteLine("");
             return RedirectToAction("Bills","Employee") ;
-
         }
+
         public ActionResult Appointments()
         {
             return View();
         }
 
         [HttpPost]
-
         public ActionResult SearchEmail([FromBody] User userMail)
         {
             users = db.Users.ToList();
@@ -92,7 +100,6 @@ namespace AutomobileRepairShop.Controllers
             }
             mymodel.AppointList = appointList;
             return RedirectToAction("Bills","Employee");
-        }
-     
+        }     
     }
 }
