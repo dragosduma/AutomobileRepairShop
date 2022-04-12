@@ -45,7 +45,15 @@ namespace AutomobileRepairShop.Models
 
                 entity.Property(e => e.Date).HasColumnType("datetime");
 
+                entity.Property(e => e.IdCar).HasColumnName("ID_Car");
+
                 entity.Property(e => e.IdUser).HasColumnName("ID_User");
+
+                entity.HasOne(d => d.IdCarNavigation)
+                    .WithMany(p => p.Appointments)
+                    .HasForeignKey(d => d.IdCar)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Appointment_Car");
 
                 entity.HasOne(d => d.IdUserNavigation)
                     .WithMany(p => p.Appointments)
