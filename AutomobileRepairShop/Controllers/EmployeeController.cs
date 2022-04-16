@@ -93,7 +93,9 @@ namespace AutomobileRepairShop.Controllers
                     Debug.Write("App gasit:" + thisapp.User.Name + " " + thisapp.Car.Brand + " " + thisapp.Appointment.Date);
                 }
             }
+
             return new EmptyResult();
+
         }
     }
 }
