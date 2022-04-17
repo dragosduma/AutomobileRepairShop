@@ -59,7 +59,6 @@ namespace AutomobileRepairShop.Controllers
             foreach (CarPart cp in array)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
-
                 Debug.Write(carPart.Id + " ");
             }
             Debug.WriteLine("");
@@ -79,23 +78,28 @@ namespace AutomobileRepairShop.Controllers
 
             Debug.WriteLine("SearchEmail entered");
             Debug.WriteLine(userMail.Email);
-            User u = db.Users.Single(model => model.Email == userMail.Email);
-
-            Debug.WriteLine("User gasit");
-
-            foreach (Appointment app in appointments)
+            User u = db.Users.FirstOrDefault(model => model.Email.ToLower() == userMail.Email.ToLower());
+            if (u == null)
             {
-                if (app.IdUser == u.Id && app.Finished == false)
-                {
-                    Car car = db.Cars.Single(model => model.Id == app.IdCar);
-                    AppointClasses thisapp = new AppointClasses(app, car, u);
-                    appointClasses.Add(thisapp);
-                    Debug.Write("App gasit:" + thisapp.User.Name + " " + thisapp.Car.Brand + " " + thisapp.Appointment.Date);
-                }
+                ViewBag.Message = "User doesn't exist";
+                return View();
             }
+            else
+            {
+                Debug.WriteLine("User gasit");
+                foreach (Appointment app in appointments)
+                {
+                    if (app.IdUser == u.Id && app.Finished == false)
+                    {
+                        Car car = db.Cars.Single(model => model.Id == app.IdCar);
+                        AppointClasses thisapp = new AppointClasses(app, car, u);
+                        appointClasses.Add(thisapp);
+                        Debug.Write("App gasit:" + thisapp.User.Name + " " + thisapp.Car.Brand + " " + thisapp.Appointment.Date);
+                    }
+                }
 
-            return new EmptyResult();
-
+                return new EmptyResult();
+            }   
         }
     }
 }
