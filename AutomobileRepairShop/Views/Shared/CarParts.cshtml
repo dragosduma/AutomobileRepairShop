@@ -11,19 +11,12 @@
     </head>
     <body>
 
-        
-
-         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+       <select name="appointments" id="appointments" style="margin-bottom: 25px">
                 @foreach (AppointClasses item in Model.AppointList)
                 {
-                    <li><button class="drowpdown-item" type = "button">@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.User.Name) @Html.DisplayFor(modelItem => item.Appointment.Date)</button></li>
+                    <option>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.User.Name) @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
                 }
-            </ul>
-        </div>
+        </select>
 
         <div class="container-fluid">
             <table class="table table-striped table-hover" id="myTable">

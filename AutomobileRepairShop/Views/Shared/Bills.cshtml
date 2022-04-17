@@ -22,24 +22,28 @@
                     contentType: "application/json; charset=utf-8",
                     data: dataToPost,
                     url:'/Employee/SearchEmail',
+                    success:function(response){
+                        if(response.status==="success"){
+                            alert("Appointments found");
+                        }
+                        else alert("Error");
+                    }
                 });
 
                 $('#appDrop').trigger('change');
             }
         </script>
 
-        <div class="container-fluid">
+        <div class="container-fluid" style="margin-bottom:25px">
             <label for="emailUser" class="form-label">Search for appointments by email:</label>
             <input type="email" class="form-control" id="emailUser">
         </div>
 
-        <div class="container-fluid">
+        <div class="container-fluid" style="margin-bottom:25px">
             <button type="button" class="btn btn-primary" onclick="emailFunction()">Search</button>
         </div>
 
-
-
-        <div class="container-fluid">
+        <div class="container-fluid" style="margin-bottom: 25px">
             <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("CarParts", "Employee")'">Create bill for selected client</button>
         </div>
 
