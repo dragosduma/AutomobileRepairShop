@@ -27,7 +27,7 @@ namespace AutomobileRepairShop.Controllers
             User user1 = db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
             if (user1 == null)
             {
-                ViewBag.EmailNotExists = "Account doesn't exists!";
+                ViewBag.EmailNotExists = "Account doesn't exist!";
                 return View();
             }
 
