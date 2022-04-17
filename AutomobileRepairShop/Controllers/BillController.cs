@@ -13,16 +13,16 @@ namespace AutomobileRepairShop.Controllers
         {
             //Load the pdf template from the project directory
             string root = Directory.GetCurrentDirectory();
-            string fileName = root + "/wwwroot/docs/Bill_Example.pdf";
+            string fileName = root + "/wwwroot/docs/Bill_Example2.pdf";
             FileStream docStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             PdfLoadedDocument loadedDocument = new PdfLoadedDocument(docStream);
             PdfLoadedForm form = loadedDocument.Form;
-            
+
             //Edit each field using the fields' name (inspect the doc in browser)
             (form.Fields[0] as PdfLoadedTextBoxField).Text = "John";
             (form.Fields["name8[last]"] as PdfLoadedTextBoxField).Text = "Doe";
             (form.Fields["description6"] as PdfLoadedTextBoxField).Text = "test description";
-            
+            (form.Fields["finalPrice11"] as PdfLoadedTextBoxField).Text = "0";
             //Create the desired pdf file and return it to the user
             MemoryStream stream = new MemoryStream();
             loadedDocument.Save(stream);

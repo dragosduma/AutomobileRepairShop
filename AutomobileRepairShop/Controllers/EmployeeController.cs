@@ -65,12 +65,14 @@ namespace AutomobileRepairShop.Controllers
             return RedirectToAction("Bills","Employee") ;
         }
 
-        }
+        
 
-        public ActionResult CreateBill(List<CarPart> parts, int userId)
+        public ActionResult CreateBill([FromBody] List<CarPart> partsIds)//, int appointmentId)
         {
-            User user = db.Users.FirstOrDefault(x => x.Id == userId);
-
+            Debug.WriteLine("Creating bill");
+            int appointmentId = 1;
+            Appointment appointment = db.Appointments.FirstOrDefault(x => x.Id == appointmentId);
+            User user = db.Users.FirstOrDefault(x => x.Id == appointment.IdUser);
             if (user == null)
             {
                 Debug.WriteLine("User does not exist!");
@@ -81,42 +83,42 @@ namespace AutomobileRepairShop.Controllers
 
             string description = "";
             int price = 0;
-            foreach (CarPart cp in parts)
+            foreach (CarPart cp in partsIds)
             {
-                description = description + cp.Name + '\n';
-                price += Convert.ToInt32(cp.Price);
+                CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
+                description = description + carPart.Name + '\n';
+                price += Convert.ToInt32(carPart.Price);
             }
 
             // Generate Database entry
-            CreateBillEntry(description,userId,price);
+            CreateBillEntry(appointment, description,price);
 
-            // Generate Document
-            CreateDocument(name, surname, description, price);
-
-            return Redirect("/");
+            // Generate Document 
+            return CreateDocument(name, surname, description, price);
         }
 
-        public ActionResult CreateBillEntry(string description, int userId, int price)
+        public void CreateBillEntry(Appointment appointment, string description, int price)
         {
+            Debug.WriteLine("Creating Entry");
             Bill bill = new Bill();
             bill.Description = description;
-            bill.UserId = userId;
+            bill.UserId = appointment.IdUser;
             bill.Price = price;
 
             //to be added
-
-            //bill.Appointment_ID = appointmentID;
-            //bill.Car_ID = carID;
+            bill.AppointmentId = appointment.Id;
+            bill.CarId = appointment.IdCar;
             db.Bills.Add(bill);
             db.SaveChanges();
-            return Redirect("/");
+            //return Redirect("/");
         }
 
         public ActionResult CreateDocument(string name, string surname, string description, int finalPrice)
         {
+            Debug.WriteLine("Creating Document");
             //Load the pdf template from the project directory
             string root = Directory.GetCurrentDirectory();
-            string fileName = root + "/wwwroot/docs/Bill_Example.pdf";
+            string fileName = root + "/wwwroot/docs/Bill_Example2.pdf";
             FileStream docStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             PdfLoadedDocument loadedDocument = new PdfLoadedDocument(docStream);
             PdfLoadedForm form = loadedDocument.Form;
@@ -126,8 +128,9 @@ namespace AutomobileRepairShop.Controllers
             (form.Fields["name8[first]"] as PdfLoadedTextBoxField).Text = surname;
             (form.Fields["name8[last]"] as PdfLoadedTextBoxField).Text = name;
             (form.Fields["description6"] as PdfLoadedTextBoxField).Text = description;
+            (form.Fields["finalPrice11"] as PdfLoadedTextBoxField).Text = finalPrice.ToString();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
-
+            
             //Create the desired pdf file and return it to the user
             MemoryStream stream = new MemoryStream();
             loadedDocument.Save(stream);
@@ -139,8 +142,12 @@ namespace AutomobileRepairShop.Controllers
             string contentType = "application/pdf";
             //Define the file name.
             string date = DateTime.Now.ToString("yyyyMMdd");
-            fileName = date+"_"+name+surname;
+            fileName = name+surname+"_"+date+".pdf";
             //Creates a FileContentResult object by using the file contents, content type, and file name.
+            Debug.WriteLine(stream.ToString());
+            Debug.WriteLine(contentType.ToString());
+            Debug.WriteLine(fileName.ToString());
+            //ActionResult file = ;
             return File(stream, contentType, fileName);
         }
 
@@ -183,3 +190,4 @@ namespace AutomobileRepairShop.Controllers
         }     
     }
 }
+
