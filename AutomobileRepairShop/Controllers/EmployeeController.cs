@@ -71,8 +71,12 @@ namespace AutomobileRepairShop.Controllers
 
         public ActionResult CreateBill([FromBody] List<CarPart> partsIds)//, int appointmentId)
         {
+            
             Debug.WriteLine("Creating bill");
-            int appointmentId = 1;
+
+            int appointmentId = partsIds.LastOrDefault().Id;
+            partsIds.RemoveAt(partsIds.Count - 1);
+
             Appointment appointment = db.Appointments.FirstOrDefault(x => x.Id == appointmentId);
             User user = db.Users.FirstOrDefault(x => x.Id == appointment.IdUser);
             if (user == null)
@@ -88,18 +92,18 @@ namespace AutomobileRepairShop.Controllers
             foreach (CarPart cp in partsIds)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
-                description = description + carPart.Name + '\n';
+                description = description + carPart.Name + '@';
                 price += Convert.ToInt32(carPart.Price);
             }
 
             // Generate Database entry
-            CreateBillEntry(appointment, description,price);
+            Bill bill = CreateBillEntry(appointment,description,price);
 
             // Generate Document 
-            return CreateDocument(name, surname, description, price);
+            return CreateDocument(bill);
         }
 
-        public void CreateBillEntry(Appointment appointment, string description, int price)
+        public Bill CreateBillEntry(Appointment appointment, string description, int price)
         {
             Debug.WriteLine("Creating Entry");
             Bill bill = new Bill();
@@ -112,11 +116,17 @@ namespace AutomobileRepairShop.Controllers
             bill.CarId = appointment.IdCar;
             db.Bills.Add(bill);
             db.SaveChanges();
-            //return Redirect("/");
+            return bill;
         }
 
-        public ActionResult CreateDocument(string name, string surname, string description, int finalPrice)
+        public ActionResult CreateDocument(Bill bill)
         {
+            User user = db.Users.FirstOrDefault(x => x.Id == bill.UserId);
+            string name = user.Name;
+            string surname = user.Surname;
+            string description = DescriptionDecode(bill.Description); 
+            double finalPrice = bill.Price;
+
             Debug.WriteLine("Creating Document");
             //Load the pdf template from the project directory
             string root = Directory.GetCurrentDirectory();
@@ -151,6 +161,13 @@ namespace AutomobileRepairShop.Controllers
             Debug.WriteLine(fileName.ToString());
             //ActionResult file = ;
             return File(stream, contentType, fileName);
+        }
+
+        public string DescriptionDecode(string description)
+        {
+            Debug.WriteLine(description);
+            Debug.WriteLine(description.Replace('@', '\n'));
+            return description.Replace('@', '\n');
         }
 
         public ActionResult Appointments()

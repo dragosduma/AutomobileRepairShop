@@ -14,7 +14,7 @@
        <select name="appointments" id="appointments" style="margin-bottom: 25px">
                 @foreach (AppointClasses item in Model.AppointList)
                 {
-                    <option>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.User.Name) @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
+                    <option value=@item.Appointment.Id>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.User.Name) @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
                 }
         </select>
 
@@ -116,10 +116,14 @@
                 cell.append($(this).attr('itemlaborprice'));
             });
             function createbillfunction(){
+
                 if(list.length<1){
                     alert("list is null");
                 }else
                 {
+                    var itemId={Id: parseInt(document.getElementById("appointments").value)};
+                    list.push(itemId);
+
                     var dataToPost=JSON.stringify(list);
                     $.ajax({
                         async: true,
