@@ -22,17 +22,19 @@ namespace AutomobileRepairShop.Controllers
         [Authorize(Roles = "Employee")]
         public ActionResult Bills()
         {
+            
             ViewBag.IsLogged = IsLogged();
             ViewBag.IsEmployee = IsEmployee();
             mymodel.CarParts = db.CarParts.ToList();
             mymodel.AddedCarParts = carParts;
             mymodel.AppointList = appointList;
-            ; return View(mymodel);
+            return View(mymodel);
         }
 
         [Authorize(Roles = "Employee")]
         public ActionResult CarParts()
         {
+            carParts.Clear();
             ViewBag.IsLogged = IsLogged();
             ViewBag.IsEmployee = IsEmployee();
             mymodel.CarParts = db.CarParts.ToList();
@@ -167,8 +169,6 @@ namespace AutomobileRepairShop.Controllers
 
         public string DescriptionDecode(string description)
         {
-            Debug.WriteLine(description);
-            Debug.WriteLine(description.Replace('@', '\n'));
             return description.Replace('@', '\n');
         }
 
