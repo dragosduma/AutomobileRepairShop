@@ -31,6 +31,7 @@ namespace AutomobileRepairShop.Controllers
         [Authorize(Roles = "Employee")]
         public ActionResult CarParts()
         {
+            carParts.Clear();
             ViewBag.IsLogged = IsLogged();
             ViewBag.IsEmployee = IsEmployee();
             mymodel.CarParts = db.CarParts.ToList();
