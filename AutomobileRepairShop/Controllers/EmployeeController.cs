@@ -9,7 +9,7 @@ namespace AutomobileRepairShop.Controllers
     public class EmployeeController : ControllerBase
     {
         private AutoRSContext db = new AutoRSContext();
-        private List<CarPart> carParts = new List<CarPart>();
+        private static List<CarPart> carParts = new List<CarPart>();
         private List<User> users = new List<User>();
         private List<Appointment> appointments = new List<Appointment>();
         private static List<Appointment> appointList = new List<Appointment>();
@@ -43,6 +43,7 @@ namespace AutomobileRepairShop.Controllers
         [HttpPost]
         public JsonResult BillsAdd([FromBody] List<CarPart> array)
         {
+            carParts.Clear();
             foreach (CarPart cp in array)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
@@ -56,9 +57,11 @@ namespace AutomobileRepairShop.Controllers
         [HttpPost]
         public ActionResult CreateBills([FromBody] List<CarPart> array)
         {
+            carParts.Clear();
             foreach (CarPart cp in array)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
+                carParts.Add(carPart);
                 Debug.Write(carPart.Id + " ");
             }
             Debug.WriteLine("");
