@@ -14,7 +14,7 @@
        <select name="appointments" id="appointments" style="margin-bottom: 25px">
                 @foreach (AppointClasses item in Model.AppointList)
                 {
-                    <option>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.User.Name) @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
+                    <option>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.Car.Model) @Html.DisplayFor(modelItem => item.User.Name) @Html.DisplayFor(modelItem => item.User.Surname) @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
                 }
         </select>
 
