@@ -23,10 +23,10 @@
                     data: dataToPost,
                     url:'/Employee/SearchEmail',
                     success:function(response){
-                        if(response.status==="success"){
-                            alert("Appointments found");
+                        if(response.status){
+                            document.getElementById("p1").innerHTML="Appointment found";                    
                         }
-                        else alert("Error");
+                        else document.getElementById("p1").innerHTML="No appointments found";
                     }
                 });
 
@@ -37,6 +37,7 @@
         <div class="container-fluid" style="margin-bottom:25px">
             <label for="emailUser" class="form-label">Search for appointments by email:</label>
             <input type="email" class="form-control" id="emailUser">
+            <p id="p1"></p>
         </div>
 
         <div class="container-fluid" style="margin-bottom:25px">
