@@ -24,9 +24,14 @@
                     url:'/Employee/SearchEmail',
                     success:function(response){
                         if(response.status){
-                            document.getElementById("p1").innerHTML="Appointment found";                    
+                            $('.createButton').show();
+                            document.getElementById("p1").innerHTML="Appointment found";
                         }
-                        else document.getElementById("p1").innerHTML="No appointments found";
+                        else
+                        {
+                            document.getElementById("p1").innerHTML="No appointments found";
+                            $('.createButton').hide();
+                        }
                     }
                 });
 
@@ -38,14 +43,12 @@
             <label for="emailUser" class="form-label">Search for appointments by email:</label>
             <input type="email" class="form-control" id="emailUser">
             <p id="p1"></p>
-        </div>
 
-        <div class="container-fluid" style="margin-bottom:25px">
-            <button type="button" class="btn btn-primary" onclick="emailFunction()">Search</button>
-        </div>
+            <button type="button" class="btn btn-primary" onclick="emailFunction()" style="margin-bottom:25px">Search</button>
 
-        <div class="container-fluid" style="margin-bottom: 25px">
-            <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("CarParts", "Employee")'">Create bill for selected client</button>
+            <div class="createButton" style="margin-bottom: 25px; display:none">
+                <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("CarParts", "Employee")'">Create bill for selected client</button>
+            </div>
         </div>
 
     </body>
