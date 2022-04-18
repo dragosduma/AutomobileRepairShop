@@ -71,7 +71,7 @@ namespace AutomobileRepairShop.Controllers
         }
 
         [HttpPost]
-        public ActionResult SearchEmail([FromBody] User userMail)
+        public JsonResult SearchEmail([FromBody] User userMail)
         {
             users = db.Users.ToList();
             appointments = db.Appointments.ToList();
@@ -82,7 +82,7 @@ namespace AutomobileRepairShop.Controllers
             if (u == null)
             {
                 ViewBag.Message = "User doesn't exist";
-                return View();
+                return Json(new { status = false });
             }
             else
             {
@@ -98,7 +98,7 @@ namespace AutomobileRepairShop.Controllers
                     }
                 }
 
-                return new EmptyResult();
+                return Json(new { status = true });
             }   
         }
     }
