@@ -9,7 +9,7 @@ namespace AutomobileRepairShop.Controllers
     public class EmployeeController : ControllerBase
     {
         private AutoRSContext db = new AutoRSContext();
-        private List<CarPart> carParts = new List<CarPart>();
+        private static List<CarPart> carParts = new List<CarPart>();
         private List<User> users = new List<User>();
         private List<Appointment> appointments = new List<Appointment>();
         private static List<Appointment> appointList = new List<Appointment>();
@@ -43,6 +43,7 @@ namespace AutomobileRepairShop.Controllers
         [HttpPost]
         public JsonResult BillsAdd([FromBody] List<CarPart> array)
         {
+            carParts.Clear();
             foreach (CarPart cp in array)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
@@ -56,9 +57,11 @@ namespace AutomobileRepairShop.Controllers
         [HttpPost]
         public ActionResult CreateBills([FromBody] List<CarPart> array)
         {
+            carParts.Clear();
             foreach (CarPart cp in array)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
+                carParts.Add(carPart);
                 Debug.Write(carPart.Id + " ");
             }
             Debug.WriteLine("");
@@ -71,7 +74,7 @@ namespace AutomobileRepairShop.Controllers
         }
 
         [HttpPost]
-        public ActionResult SearchEmail([FromBody] User userMail)
+        public JsonResult SearchEmail([FromBody] User userMail)
         {
             users = db.Users.ToList();
             appointments = db.Appointments.ToList();
@@ -82,7 +85,7 @@ namespace AutomobileRepairShop.Controllers
             if (u == null)
             {
                 ViewBag.Message = "User doesn't exist";
-                return View();
+                return Json(new { status = false });
             }
             else
             {
@@ -98,7 +101,7 @@ namespace AutomobileRepairShop.Controllers
                     }
                 }
 
-                return new EmptyResult();
+                return Json(new { status = true });
             }   
         }
     }
