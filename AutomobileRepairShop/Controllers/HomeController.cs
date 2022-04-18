@@ -64,5 +64,28 @@ namespace AutomobileRepairShop.Controllers
             return View(appointClasses);
         }
 
+        [HttpPost]
+        public ActionResult AddAppoint(AppointClasses appointClasses)
+        {
+            String email=GetEmail();
+            User user = db.Users.FirstOrDefault(x => x.Email == email);
+            Car car = db.Cars.FirstOrDefault(x => x.ChassisCode==appointClasses.Car.ChassisCode);
+            if(car == null)
+            {
+                car = appointClasses.Car;
+                car.IdUser = user.Id;
+                db.Cars.Add(car);
+                db.SaveChanges();
+            }
+            Appointment app =appointClasses.Appointment;
+            app.IdUser = user.Id;
+            app.IdCar = car.Id;
+            app.Finished = false;
+            db.Appointments.Add(app);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");  //maybe redirect to user's appointment list/history
+        }
+
     }
 }
