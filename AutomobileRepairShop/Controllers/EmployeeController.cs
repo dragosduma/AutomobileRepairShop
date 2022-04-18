@@ -25,7 +25,7 @@ namespace AutomobileRepairShop.Controllers
             mymodel.CarParts = db.CarParts.ToList();
             mymodel.AddedCarParts = carParts;
             mymodel.AppointList = appointList;
-            ; return View(mymodel);
+            return View(mymodel);
         }
 
         [Authorize(Roles = "Employee")]
