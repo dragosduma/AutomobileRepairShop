@@ -49,7 +49,6 @@ namespace AutomobileRepairShop.Controllers
                         IsPersistent = true,
                         ExpiresUtc = DateTime.UtcNow.AddDays(7)
                     });
-
             }
             return Redirect("/");
         }
@@ -151,9 +150,6 @@ namespace AutomobileRepairShop.Controllers
                 Debug.WriteLine(ex.ToString());
             }
             return View();
-
-        }
-
-        
+        } 
     }
 }
