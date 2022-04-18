@@ -27,7 +27,7 @@ namespace AutomobileRepairShop.Controllers
             User user1 = db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
             if (user1 == null)
             {
-                ViewBag.EmailNotExists = "Account doesn't exists!";
+                ViewBag.EmailNotExists = "Account doesn't exist!";
                 return View();
             }
 
@@ -49,7 +49,6 @@ namespace AutomobileRepairShop.Controllers
                         IsPersistent = true,
                         ExpiresUtc = DateTime.UtcNow.AddDays(7)
                     });
-
             }
             return Redirect("/");
         }
@@ -151,9 +150,6 @@ namespace AutomobileRepairShop.Controllers
                 Debug.WriteLine(ex.ToString());
             }
             return View();
-
-        }
-
-        
+        } 
     }
 }

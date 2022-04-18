@@ -7,6 +7,7 @@ namespace AutomobileRepairShop.Models
     {
         public Car()
         {
+            Appointments = new HashSet<Appointment>();
             Bills = new HashSet<Bill>();
         }
 
@@ -18,6 +19,7 @@ namespace AutomobileRepairShop.Models
         public int IdUser { get; set; }
 
         public virtual User IdUserNavigation { get; set; } = null!;
+        public virtual ICollection<Appointment> Appointments { get; set; }
         public virtual ICollection<Bill> Bills { get; set; }
     }
 }
