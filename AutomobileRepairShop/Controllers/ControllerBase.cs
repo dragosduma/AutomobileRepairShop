@@ -26,6 +26,10 @@ namespace AutomobileRepairShop.Controllers
         {
             return this.User.FindFirst(ClaimTypes.Name).Value;
         }
+        public string GetEmail()
+        {
+            return this.User.FindFirst(ClaimTypes.Email).Value;
+        }
 
         public bool IsAdmin()
         {

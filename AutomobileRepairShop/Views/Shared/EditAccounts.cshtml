@@ -26,6 +26,8 @@
                                     <th scope="col">Email</th>
                                     <th scope="col">IdRole</th>
                                     <th scope="col">IdDepartment</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,12 +42,14 @@
                                         <td>@Html.DisplayFor(modelItem => item.Email)</td>
                                         <td>@Html.DisplayFor(modelItem => item.IdRole)</td>
                                         <td>@Html.DisplayFor(modelItem => item.IdDepartment)</td>
+                                        <td><button type="button" itemid="@item.Id" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button></td>
+                                        <td><button type="button" itemid="@item.Id" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button></td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
-
+                    @*
                     <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                         <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
                                 data-bs-target="#editModal">
@@ -55,7 +59,7 @@
                                 data-bs-target="#deleteModal">
                             Delete
                         </button>
-                    </div>
+                    </div> *@
 
 
 
@@ -76,7 +80,7 @@
                                     <form id="editform" asp-controller="Admin" asp-action="EditAccount" method="post" style="width: 23rem;">
 
                                         <div class="form-outline mb-4">
-                                            <input name="Id" type="name" for="id"
+                                            <input name="Id" type="name" for="id" 
                                                    class="form-control form-control-lg" />
                                             <label class="form-label" for="id">User Id</label>
                                         </div>
@@ -156,6 +160,20 @@
                 </div>
             </div>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+        <script>
+            $('.btn-outline-info').click(function(){
+                var editid=parseInt($(this).attr('itemid'));                
+                var formobj=document.forms['editform'];
+                formobj.elements[0].value=editid;
+            });
+            $('.btn-outline-danger').click(function(){
+                var editid=parseInt($(this).attr('itemid'));                
+                var formobj=document.forms['deleteform'];
+                formobj.elements[0].value=editid;
+            });
+        </script>
 
     </section>
 
