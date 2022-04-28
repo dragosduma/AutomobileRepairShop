@@ -20,17 +20,18 @@ namespace AutomobileRepairShop.Controllers
         [Authorize(Roles = "Employee")]
         public ActionResult Bills()
         {
+            appointClasses.Clear();
             ViewBag.IsLogged = IsLogged();
             ViewBag.IsEmployee = IsEmployee();
             mymodel.CarParts = db.CarParts.ToList();
             mymodel.AddedCarParts = carParts;
             mymodel.AppointList = appointList;
-            ; return View(mymodel);
+            return View(mymodel);
         }
 
         [Authorize(Roles = "Employee")]
         public ActionResult CarParts()
-        {   
+        {
             carParts.Clear();
             ViewBag.IsLogged = IsLogged();
             ViewBag.IsEmployee = IsEmployee();
@@ -91,19 +92,24 @@ namespace AutomobileRepairShop.Controllers
             else
             {
                 Debug.WriteLine("User gasit");
+                bool found = false;
+                appointClasses.Clear();
                 foreach (Appointment app in appointments)
-                {
+                { 
                     if (app.IdUser == u.Id && app.Finished == false)
                     {
+                        found = true;
                         Car car = db.Cars.Single(model => model.Id == app.IdCar);
                         AppointClasses thisapp = new AppointClasses(app, car, u);
                         appointClasses.Add(thisapp);
                         Debug.Write("App gasit:" + thisapp.User.Name + " " + thisapp.Car.Brand + " " + thisapp.Appointment.Date);
                     }
                 }
+                if (found == true)
+                    return Json(new { status = true });
 
-                return Json(new { status = true });
-            }   
+            }
+            return Json(new { status = false });
         }
     }
 }
