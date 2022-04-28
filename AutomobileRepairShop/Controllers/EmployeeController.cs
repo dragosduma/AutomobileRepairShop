@@ -5,6 +5,7 @@ using Syncfusion.Pdf.Parsing;
 using System.Diagnostics;
 using System.Web;
 using System.Dynamic;
+using System.Windows;
 
 namespace AutomobileRepairShop.Controllers
 {
@@ -71,11 +72,8 @@ namespace AutomobileRepairShop.Controllers
             return RedirectToAction("Bills", "Employee");
         }
 
-        
-
-        public ActionResult CreateBill([FromBody] List<CarPart> partsIds)//, int appointmentId)
+        public JsonResult CreateBill([FromBody] List<CarPart> partsIds)//, int appointmentId)
         {
-            
             Debug.WriteLine("Creating bill");
 
             int appointmentId = partsIds.LastOrDefault().Id;
@@ -86,7 +84,7 @@ namespace AutomobileRepairShop.Controllers
             if (user == null)
             {
                 Debug.WriteLine("User does not exist!");
-                return Redirect("/");
+                return Json(false);
             }
             string name = user.Name;
             string surname = user.Surname;
@@ -99,12 +97,10 @@ namespace AutomobileRepairShop.Controllers
                 description = description + carPart.Name + '@';
                 price += Convert.ToInt32(carPart.Price);
             }
-
             // Generate Database entry
             Bill bill = CreateBillEntry(appointment,description,price);
 
-            // Generate Document 
-            return CreateDocument(bill);
+            return Json(new { data = CreateDocument(bill) });
         }
 
         public Bill CreateBillEntry(Appointment appointment, string description, int price)
@@ -115,7 +111,6 @@ namespace AutomobileRepairShop.Controllers
             bill.UserId = appointment.IdUser;
             bill.Price = price;
 
-            //to be added
             bill.AppointmentId = appointment.Id;
             bill.CarId = appointment.IdCar;
             db.Bills.Add(bill);
@@ -123,7 +118,9 @@ namespace AutomobileRepairShop.Controllers
             return bill;
         }
 
-        public ActionResult CreateDocument(Bill bill)
+        
+
+        public string CreateDocument(Bill bill)
         {
             User user = db.Users.FirstOrDefault(x => x.Id == bill.UserId);
             string name = user.Name;
@@ -146,25 +143,39 @@ namespace AutomobileRepairShop.Controllers
             (form.Fields["description6"] as PdfLoadedTextBoxField).Text = description;
             (form.Fields["finalPrice11"] as PdfLoadedTextBoxField).Text = finalPrice.ToString();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
-            
+
+
+            //Define the file name.
+            string date = DateTime.Now.ToString("yyyyMMdd");
+            fileName = name + surname + "_" + date + ".pdf";
             //Create the desired pdf file and return it to the user
-            MemoryStream stream = new MemoryStream();
+            FileStream stream = new FileStream(root + "\\wwwroot\\docs\\" + fileName, FileMode.Create, FileAccess.ReadWrite);
             loadedDocument.Save(stream);
             //If the position is not set to '0' then the PDF will be empty.
             stream.Position = 0;
             //Close the document.
             loadedDocument.Close(true);
+            
             //Defining the ContentType for pdf file.
             string contentType = "application/pdf";
-            //Define the file name.
-            string date = DateTime.Now.ToString("yyyyMMdd");
-            fileName = name+surname+"_"+date+".pdf";
+            
+
+
             //Creates a FileContentResult object by using the file contents, content type, and file name.
-            Debug.WriteLine(stream.ToString());
-            Debug.WriteLine(contentType.ToString());
-            Debug.WriteLine(fileName.ToString());
-            //ActionResult file = ;
-            return File(stream, contentType, fileName);
+            stream.Position = 0;
+            FileStreamResult fileResult = File(stream, contentType, fileName);
+            stream.Close();
+            
+            return fileName;
+        }
+
+        public IActionResult DownloadFile(string fileName)
+        {
+            string root = Directory.GetCurrentDirectory() + "\\wwwroot\\docs\\";
+            string filePath = root + fileName;
+            string contentType = "application/pdf";
+            FileStream docStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return File(docStream,contentType, filePath);
         }
 
         public string DescriptionDecode(string description)
