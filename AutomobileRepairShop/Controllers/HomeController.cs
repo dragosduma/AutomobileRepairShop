@@ -23,9 +23,9 @@ namespace AutomobileRepairShop.Controllers
         {
             // console checker for user login
             ViewBag.IsLogged = IsLogged();
-            Debug.WriteLine(ViewBag.IsLogged.ToString() as string);
+            //Debug.WriteLine(ViewBag.IsLogged.ToString() as string);
             ViewBag.IsAdmin = IsAdmin();
-            Debug.WriteLine(ViewBag.IsAdmin.ToString() as string);
+            //Debug.WriteLine(ViewBag.IsAdmin.ToString() as string);
             ViewBag.IsEmployee = IsEmployee();
             return View();
         }

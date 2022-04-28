@@ -41,7 +41,6 @@ namespace AutomobileRepairShop.Controllers
             if (claym != null)
                 if (claym.Value.ToString() == "Administrator")
                     isAdmin = true;
-
             return isAdmin;
         }
 

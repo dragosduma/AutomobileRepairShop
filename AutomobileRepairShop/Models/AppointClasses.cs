@@ -2,6 +2,7 @@
 {
     public class AppointClasses
     {
+        public static int idToSend;
         public Appointment Appointment { get; set; }
         public Car Car { get; set; }
         public User User { get; set; }

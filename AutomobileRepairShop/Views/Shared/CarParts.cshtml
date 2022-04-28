@@ -12,9 +12,10 @@
     <body>
 
        <select name="appointments" id="appointments" style="margin-bottom: 25px">
+                <option value="" selected disabled hidden>Select appointment</option>
                 @foreach (AppointClasses item in Model.AppointList)
                 {
-                    <option>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.User.Name) @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
+                    <option value=@item.Appointment.Id>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.User.Name) @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
                 }
         </select>
 
@@ -46,7 +47,7 @@
                     }
                 </tbody>
         </div>
-
+         
         <div class="container-fluid">
             <!--<p class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Parts to be billed:</p>-->
             <table class="table table-borderless" id="myTable1">
@@ -85,13 +86,9 @@
             var list=[];
             $('.btn-outline-info').click(function(){
                 var itemId={Id: parseInt($(this).attr('itemid'))};
-                //var itemId=$(this).attr('itemid');
-                //list.push(parseInt(itemId));
                 list.push(itemId);
                 var dataToPost=JSON.stringify(list);
-                //console.log(list);
-                //console.log(dataToPost);
-                
+
                 $.ajax({
                     async: true,
                     type: 'POST',
@@ -116,23 +113,51 @@
                 cell = $(row.insertCell(2));
                 cell.append($(this).attr('itemlaborprice'));
             });
-            function createbillfunction(){
+            
+            function createBill(){
+
                 if(list.length<1){
                     alert("list is null");
                 }else
                 {
+                    var itemId={Id: parseInt(document.getElementById("appointments").value)};
+                    list.push(itemId);
                     var dataToPost=JSON.stringify(list);
+                   
                     $.ajax({
-                        async: true,
-                        type: 'POST',
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
+                        type: "POST",
+                        url: '/Employee/CreateBill',
                         data: dataToPost,
-                        url: '/Employee/CreateBills',
+                        dataType: "json",
+                        contentType:'application/json',
+                        success: function(data, textStatus, jqXHR) {
+                            downloadFile(data);
+                        },
+                        error: function(j,t,e){
+                            console.log(j);
+                            console.log(t);
+                            console.log(e);
+                        }
                     });
                 }
             }
+
+            function downloadFile(data){
+
+                let button = document.createElement('button');
+                button.type="button";
+                button.onclick = function(){
+                    url = '@Url.Action("DownloadFile","Employee", new {fileName = "-1"})';
+                    url = url.replace("-1",data.data);
+                    window.location.href=url;
+                };
+                
+                document.body.appendChild(button);
+                button.click();
+            }
         </script>
+
+        <button><a href="javascript:;" onclick="createBill()">Create Bill</a></button> 
     </body>
     </html>
 }
