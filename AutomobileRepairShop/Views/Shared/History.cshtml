@@ -1,0 +1,31 @@
+﻿@model dynamic
+@{
+    <!DOCTYPE html>
+    <head>
+    </head>
+    <body>
+        <div class = "container-fluid">
+            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Your appointment history</h3>
+          
+            <table class = "table-stripped">
+                <thead>
+                    <th>Car model</th>
+                    <th>Chassis Code</th>
+                    <th>Appointment date</th>
+                    <th>Cost</th>
+                </thead>
+                <tbody>
+                    @foreach(AppointClasses item in Model.AppointList)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.Car.Model)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Car.ChassisCode)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Appointment.Date)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Cost)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </body>
+}

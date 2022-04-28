@@ -75,5 +75,10 @@ namespace AutomobileRepairShop.Controllers
             hashPass = Convert.ToBase64String(hashBytes);
             return hashPass;
         }
+
+        public string GetEmail()
+        {
+            return this.User.FindFirst(ClaimTypes.Email).Value;
+        }
     }
 }
