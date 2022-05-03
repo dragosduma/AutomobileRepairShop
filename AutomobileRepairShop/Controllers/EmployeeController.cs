@@ -94,13 +94,16 @@ namespace AutomobileRepairShop.Controllers
             foreach (CarPart cp in partsIds)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
-                description = description + carPart.Name + '@';
-                price += Convert.ToInt32(carPart.Price);
+                description = description + carPart.Name + ' ' + carPart.Price + '+' + carPart.LaborPrice + '@';
+                price += Convert.ToInt32(carPart.Price) + Convert.ToInt32(carPart.LaborPrice);
             }
             // Generate Database entry
             Bill bill = CreateBillEntry(appointment,description,price);
 
-            return Json(new { data = CreateDocument(bill) });
+            // return bill Id and name
+            string date = appointment.Date.ToString("yyyyMMdd");
+            string fileName = name + surname + "_" + date + ".pdf";
+            return Json(new { data = bill.Id , name = fileName});
         }
 
         public Bill CreateBillEntry(Appointment appointment, string description, int price)
@@ -118,9 +121,9 @@ namespace AutomobileRepairShop.Controllers
             return bill;
         }
 
-        
 
-        public string CreateDocument(Bill bill)
+        // create bill based on bill id
+        public ActionResult CreateDocument(Bill bill)
         {
             User user = db.Users.FirstOrDefault(x => x.Id == bill.UserId);
             string name = user.Name;
@@ -144,12 +147,11 @@ namespace AutomobileRepairShop.Controllers
             (form.Fields["finalPrice11"] as PdfLoadedTextBoxField).Text = finalPrice.ToString();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-
             //Define the file name.
             string date = DateTime.Now.ToString("yyyyMMdd");
             fileName = name + surname + "_" + date + ".pdf";
             //Create the desired pdf file and return it to the user
-            FileStream stream = new FileStream(root + "\\wwwroot\\docs\\" + fileName, FileMode.Create, FileAccess.ReadWrite);
+            MemoryStream stream = new MemoryStream();
             loadedDocument.Save(stream);
             //If the position is not set to '0' then the PDF will be empty.
             stream.Position = 0;
@@ -159,23 +161,24 @@ namespace AutomobileRepairShop.Controllers
             //Defining the ContentType for pdf file.
             string contentType = "application/pdf";
             
-
-
             //Creates a FileContentResult object by using the file contents, content type, and file name.
             stream.Position = 0;
-            FileStreamResult fileResult = File(stream, contentType, fileName);
-            stream.Close();
-            
-            return fileName;
+
+            return File(stream, contentType, fileName);
         }
 
-        public IActionResult DownloadFile(string fileName)
+        [Authorize (Roles = "Customer,Employee")]
+        public IActionResult DownloadFile(int billId)
         {
-            string root = Directory.GetCurrentDirectory() + "\\wwwroot\\docs\\";
-            string filePath = root + fileName;
-            string contentType = "application/pdf";
-            FileStream docStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            return File(docStream,contentType, filePath);
+            Bill bill = db.Bills.FirstOrDefault(x => x.Id == billId);
+            User customer = null;
+
+            customer = db.Users.FirstOrDefault(x => x.Id == bill.UserId);
+            if (customer != null || GetRole() == "Employee")
+            {
+                return CreateDocument(bill);
+            }
+            return RedirectToAction("Index","Home");
         }
 
         public string DescriptionDecode(string description)
