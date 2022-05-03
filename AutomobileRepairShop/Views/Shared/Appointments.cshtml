@@ -2,50 +2,59 @@
 @{
     <!DOCTYPE html>
     <head>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
     </head>
     <body>
         <div class="container-fluid">
             <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                 <form asp-controller="Home" asp-action="AddAppoint" method="post" style="width: 23rem;">
-                       
+
                     <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Make an appointment</h3>
 
                     <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Select the date:</h4>
-                     <!-- Date -->
-                     <div class="form-outline mb-4">
-                        <input asp-for="Appointment.Date" type="date" for="date" class="form-control form-control-lg" required/>
-                     </div>
+                    <!-- Date -->
+                    <div class="form-outline mb-4">
+                        <input asp-for="Appointment.Date" id="date_picker" type="date" for="date" class="form-control form-control-lg" required />
+                    </div>
 
-                     <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Introduce your car information:</h4>
+                    <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Introduce your car information:</h4>
 
-                     <div class="form-outline mb-4">
+                    <div class="form-outline mb-4">
                         <label class="form-label" for="brand">Brand:</label>
-                        <input asp-for="Car.Brand" type="brand" for="brand" class="form-control form-control-lg" required/>
-                     </div>
+                        <input asp-for="Car.Brand" type="brand" for="brand" class="form-control form-control-lg" required />
+                    </div>
 
-                     <div class="form-outline mb-4">
+                    <div class="form-outline mb-4">
                         <label class="form-label" for="model">Model:</label>
-                        <input asp-for="Car.Model" type="model" for="model" class="form-control form-control-lg" required/>
-                     </div>
+                        <input asp-for="Car.Model" type="model" for="model" class="form-control form-control-lg" required />
+                    </div>
 
-                     <div class="form-outline mb-4">
+                    <div class="form-outline mb-4">
                         <label class="form-label" for="code">Chassis Code:</label>
-                        <input asp-for="Car.ChassisCode" type="code" for="code" class="form-control form-control-lg" required/>
-                     </div>
+                        <input asp-for="Car.ChassisCode" type="code" for="code" class="form-control form-control-lg" required />
+                    </div>
 
-                     <div class="form-outline mb-4">
+                    <div class="form-outline mb-4">
                         <label class="form-label" for="kilometers">Kilometers:</label>
-                        <input asp-for="Car.Kilometers" type="kilometers" for="kilometers" class="form-control form-control-lg" required/>
-                     </div>
+                        <input asp-for="Car.Kilometers" type="kilometers" for="kilometers" class="form-control form-control-lg" required />
+                    </div>
 
 
-                      <div class="pt-1 mb-4">
-                            <button class="btn btn-info btn-lg btn-block" type="submit">Reservation</button>
-                      </div>
-                        
+                    <div class="pt-1 mb-4">
+                        <button class="btn btn-info btn-lg btn-block" type="submit">Reservation</button>
+                    </div>
+
                 </form>
             </div>
-            
+            <script language="javascript">
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0');
+                var yyyy = today.getFullYear();
+
+                today = yyyy + '-' + mm + '-' + dd;
+                $('#date_picker').attr('min',today);
+            </script>
         </div>
     </body>
 }
