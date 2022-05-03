@@ -1,0 +1,61 @@
+﻿@model dynamic
+@{
+    <!DOCTYPE html>
+    <head>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/jquery.dataTables.min.css"
+              integrity="sha512-1k7mWiTNoyx2XtmI96o+hdjP8nn0f3Z2N4oF/9ZZRgijyV4omsKOXEnqL1gKQNPy2MTSP9rIEWGcH/CInulptA=="
+              crossorigin="anonymous"
+              referrerpolicy="no-referrer" />
+    </head>
+    <body>
+        <div class = "container-fluid">
+            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Your appointment history</h3>
+          
+            <table class="table table-striped table-hover">
+                <thead>
+                    <th scope = "col">Car model</th>
+                    <th scope = "col">Chassis Code</th>
+                    <th scope = "col">Appointment date</th>
+                    <th scope = "col">Cost</th>
+                </thead>
+                <tbody>
+                    @foreach(AppointClasses item in Model.AppointList)
+                    {
+                        <tr class = "table-row">
+                            <td>@Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.Car.Model)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Car.ChassisCode)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Appointment.Date)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Cost)</td>
+                            <td><button type="button" class="btn btn-outline-info" onclick = "downloadFile('@item.billId','@item.User.Name','@item.User.Surname','@item.Appointment.Date.ToString("yyyyMMdd")')">Bill</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            function downloadFile(billId,name,surname,date){
+                var url = '@Url.Action("DownloadFile","Employee", new {billId = "-1"})';
+                url = url.replace("-1",billId);
+                var request = new XMLHttpRequest();
+                request.open("GET", url);
+                request.responseType = "blob";
+                request.onload = function() {
+                var msie = window.navigator.userAgent.indexOf("MSIE");
+                if (msie > 0) {
+                    window.navigator.msSaveBlob(this.response, billId);
+                } else {
+                    var url = window.URL.createObjectURL(this.response);
+                    var a = document.createElement("a");
+                    document.body.appendChild(a);
+                    a.href = url;
+                    a.download = ''.concat(name,surname,date);
+                    a.click();
+                }
+                }
+                request.send();
+            }
+        </script>
+    </body>
+}

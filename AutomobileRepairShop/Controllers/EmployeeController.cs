@@ -12,7 +12,7 @@ namespace AutomobileRepairShop.Controllers
     public class EmployeeController : ControllerBase
     {
         private AutoRSContext db = new AutoRSContext();
-        private static List<CarPart> carParts = new List<CarPart>();
+        private List<CarPart> carParts = new List<CarPart>();
         private List<User> users = new List<User>();
         private List<Appointment> appointments = new List<Appointment>();
         private static List<Appointment> appointList = new List<Appointment>();
@@ -114,9 +114,13 @@ namespace AutomobileRepairShop.Controllers
             bill.UserId = appointment.IdUser;
             bill.Price = price;
 
+
             bill.AppointmentId = appointment.Id;
             bill.CarId = appointment.IdCar;
             db.Bills.Add(bill);
+
+            appointment.Finished = true;
+            db.Appointments.Update(appointment);
             db.SaveChanges();
             return bill;
         }
@@ -131,6 +135,10 @@ namespace AutomobileRepairShop.Controllers
             string description = DescriptionDecode(bill.Description); 
             double finalPrice = bill.Price;
 
+            //Get appointment related to the bill
+            int appId = bill.AppointmentId;
+            Appointment thisapp = db.Appointments.FirstOrDefault(x => x.Id == appId);
+
             Debug.WriteLine("Creating Document");
             //Load the pdf template from the project directory
             string root = Directory.GetCurrentDirectory();
@@ -141,14 +149,14 @@ namespace AutomobileRepairShop.Controllers
 
             //Edit each field using the fields' name (inspect the doc in browser)
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            (form.Fields["name8[first]"] as PdfLoadedTextBoxField).Text = surname;
-            (form.Fields["name8[last]"] as PdfLoadedTextBoxField).Text = name;
+            (form.Fields["name8[first]"] as PdfLoadedTextBoxField).Text = name;
+            (form.Fields["name8[last]"] as PdfLoadedTextBoxField).Text = surname;
             (form.Fields["description6"] as PdfLoadedTextBoxField).Text = description;
             (form.Fields["finalPrice11"] as PdfLoadedTextBoxField).Text = finalPrice.ToString();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             //Define the file name.
-            string date = DateTime.Now.ToString("yyyyMMdd");
+            string date = thisapp.Date.ToString("yyyyMMdd");
             fileName = name + surname + "_" + date + ".pdf";
             //Create the desired pdf file and return it to the user
             MemoryStream stream = new MemoryStream();
@@ -172,7 +180,7 @@ namespace AutomobileRepairShop.Controllers
         {
             Bill bill = db.Bills.FirstOrDefault(x => x.Id == billId);
             User customer = null;
-
+            Debug.WriteLine(billId + "bill ID");
             customer = db.Users.FirstOrDefault(x => x.Id == bill.UserId);
             if (customer != null || GetRole() == "Employee")
             {

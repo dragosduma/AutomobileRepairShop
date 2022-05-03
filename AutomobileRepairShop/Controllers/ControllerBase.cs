@@ -83,5 +83,7 @@ namespace AutomobileRepairShop.Controllers
             hashPass = Convert.ToBase64String(hashBytes);
             return hashPass;
         }
+
+       
     }
 }

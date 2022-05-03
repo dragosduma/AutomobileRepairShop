@@ -15,7 +15,7 @@
                 <option value="" selected disabled hidden>Select appointment</option>
                 @foreach (AppointClasses item in Model.AppointList)
                 {
-                    <option value=@item.Appointment.Id>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand) @Html.DisplayFor(modelItem => item.User.Name) @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
+                    <option value=@item.Appointment.Id>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand)  @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
                 }
         </select>
 
