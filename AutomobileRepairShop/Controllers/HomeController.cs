@@ -68,7 +68,7 @@ namespace AutomobileRepairShop.Controllers
         public ActionResult AddAppoint(AppointClasses appointClasses)
         {
             int numberofapp = db.Appointments.Count(date => date.Date == appointClasses.Appointment.Date);
-            if (numberofapp >= 4)
+            if (numberofapp > 4)
             {
                 ViewBag.noa = "Date unavailable!";
                 return View("./Appointments", appointClasses);
