@@ -74,6 +74,13 @@ namespace AutomobileRepairShop.Controllers
         [HttpPost]
         public ActionResult AddAppoint(AppointClasses appointClasses)
         {
+            int numberofapp = db.Appointments.Count(date => date.Date == appointClasses.Appointment.Date);
+            if (numberofapp > 4)
+            {
+                ViewBag.noa = "Date unavailable!";
+                return View("./Appointments", appointClasses);
+            }
+            
             String email=GetEmail();
             User user = db.Users.FirstOrDefault(x => x.Email == email);
             Car car = db.Cars.FirstOrDefault(x => x.ChassisCode==appointClasses.Car.ChassisCode);
