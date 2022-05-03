@@ -30,9 +30,9 @@ namespace AutomobileRepairShop.Controllers
         {
             // console checker for user login
             ViewBag.IsLogged = IsLogged();
-            Debug.WriteLine(ViewBag.IsLogged.ToString() as string);
+            //Debug.WriteLine(ViewBag.IsLogged.ToString() as string);
             ViewBag.IsAdmin = IsAdmin();
-            Debug.WriteLine(ViewBag.IsAdmin.ToString() as string);
+            //Debug.WriteLine(ViewBag.IsAdmin.ToString() as string);
             ViewBag.IsEmployee = IsEmployee();
             return View();
         }
@@ -71,6 +71,31 @@ namespace AutomobileRepairShop.Controllers
             return View(appointClasses);
         }
 
+        [HttpPost]
+        public ActionResult AddAppoint(AppointClasses appointClasses)
+        {
+            String email=GetEmail();
+            User user = db.Users.FirstOrDefault(x => x.Email == email);
+            Car car = db.Cars.FirstOrDefault(x => x.ChassisCode==appointClasses.Car.ChassisCode);
+            if(car == null)
+            {
+                car = appointClasses.Car;
+                car.IdUser = user.Id;
+                db.Cars.Add(car);
+                db.SaveChanges();
+            }
+            Appointment app =appointClasses.Appointment;
+            app.IdUser = user.Id;
+            app.IdCar = car.Id;
+            app.Finished = false;
+            db.Appointments.Add(app);
+            car.Kilometers = appointClasses.Car.Kilometers;
+            db.Cars.Update(car);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");  //maybe redirect to user's appointment list/history
+        }
+
         public ActionResult History()
         {
             String email = GetEmail();
@@ -88,11 +113,11 @@ namespace AutomobileRepairShop.Controllers
                 appointClasses.Clear();
                 foreach (Appointment app in appointments)
                 {
-                    if (app.IdUser == user.Id && app.Finished == false)
+                    if (app.IdUser == user.Id && app.Finished == true)
                     {
                         found = true;
-                        Car car = db.Cars.Single(model => model.Id == app.IdCar);
-                        Bill bill = db.Bills.Single(model => model.AppointmentId == app.Id);
+                        Car car = db.Cars.FirstOrDefault(model => model.Id == app.IdCar);
+                        Bill bill = db.Bills.FirstOrDefault(model => model.AppointmentId == app.Id);
                         AppointClasses thisapp = new AppointClasses(app, car, user, bill.Price);
                         appointClasses.Add(thisapp);
                         Debug.WriteLine(thisapp.Appointment.Id);
@@ -100,6 +125,7 @@ namespace AutomobileRepairShop.Controllers
                 }
             }
             mymodel.AppointList = appointClasses;
+            ViewBag.IsLogged = IsLogged();
             return View(mymodel);
         }
     }

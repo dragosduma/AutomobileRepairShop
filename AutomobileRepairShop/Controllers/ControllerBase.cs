@@ -26,6 +26,10 @@ namespace AutomobileRepairShop.Controllers
         {
             return this.User.FindFirst(ClaimTypes.Name).Value;
         }
+        public string GetEmail()
+        {
+            return this.User.FindFirst(ClaimTypes.Email).Value;
+        }
 
         public bool IsAdmin()
         {
@@ -37,7 +41,6 @@ namespace AutomobileRepairShop.Controllers
             if (claym != null)
                 if (claym.Value.ToString() == "Administrator")
                     isAdmin = true;
-
             return isAdmin;
         }
 
@@ -76,9 +79,6 @@ namespace AutomobileRepairShop.Controllers
             return hashPass;
         }
 
-        public string GetEmail()
-        {
-            return this.User.FindFirst(ClaimTypes.Email).Value;
-        }
+       
     }
 }
