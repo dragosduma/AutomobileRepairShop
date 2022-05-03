@@ -31,6 +31,11 @@ namespace AutomobileRepairShop.Controllers
             return this.User.FindFirst(ClaimTypes.Email).Value;
         }
 
+        public string GetRole()
+        {
+            return this.User.FindFirst(ClaimTypes.Role).Value;
+        }
+
         public bool IsAdmin()
         {
             bool isAdmin = false;

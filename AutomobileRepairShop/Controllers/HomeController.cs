@@ -118,7 +118,7 @@ namespace AutomobileRepairShop.Controllers
                         found = true;
                         Car car = db.Cars.FirstOrDefault(model => model.Id == app.IdCar);
                         Bill bill = db.Bills.FirstOrDefault(model => model.AppointmentId == app.Id);
-                        AppointClasses thisapp = new AppointClasses(app, car, user, bill.Price);
+                        AppointClasses thisapp = new AppointClasses(app, car, user, bill.Price,bill.Id);
                         appointClasses.Add(thisapp);
                         Debug.WriteLine(thisapp.Appointment.Id);
                     }
