@@ -84,6 +84,7 @@ namespace AutomobileRepairShop.Controllers
             String email=GetEmail();
             User user = db.Users.FirstOrDefault(x => x.Email == email);
             Car car = db.Cars.FirstOrDefault(x => x.ChassisCode==appointClasses.Car.ChassisCode);
+
             if(car == null)
             {
                 car = appointClasses.Car;
@@ -91,11 +92,17 @@ namespace AutomobileRepairShop.Controllers
                 db.Cars.Add(car);
                 db.SaveChanges();
             }
+            else if (car.IdUser != user.Id)
+            {
+                ViewBag.car = "Not your car!";
+                return View("./Appointments", appointClasses);
+            }
             Appointment app =appointClasses.Appointment;
             app.IdUser = user.Id;
             app.IdCar = car.Id;
             app.Finished = false;
             db.Appointments.Add(app);
+            car.IdUser=user.Id;
             car.Kilometers = appointClasses.Car.Kilometers;
             db.Cars.Update(car);
             db.SaveChanges();
