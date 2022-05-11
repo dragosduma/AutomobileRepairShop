@@ -84,9 +84,12 @@ namespace AutomobileRepairShop.Controllers
         public IActionResult DeleteAccount(User user)
         {
             AutoRSContext db = new AutoRSContext();
+            db.Bills.RemoveRange(db.Bills.Where(x => x.UserId == user.Id));
+            db.Appointments.RemoveRange(db.Appointments.Where(x => x.IdUser == user.Id));
+            db.Cars.RemoveRange(db.Cars.Where(x => x.IdUser == user.Id));
             db.Remove(user);
-            Debug.WriteLine("User " + user.Name + " removed");
             db.SaveChanges();
+            Debug.WriteLine("User " + user.Name + " removed");
             return RedirectToAction("EditAccounts", "Admin");
         }
     }
