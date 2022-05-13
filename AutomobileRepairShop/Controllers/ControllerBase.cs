@@ -7,9 +7,6 @@ namespace AutomobileRepairShop.Controllers
 {
     public class ControllerBase : Controller
     {
-
-        
-
         //verifies is there is a user that is logged in
         public bool IsLogged()
         {
@@ -83,7 +80,5 @@ namespace AutomobileRepairShop.Controllers
             hashPass = Convert.ToBase64String(hashBytes);
             return hashPass;
         }
-
-       
     }
 }

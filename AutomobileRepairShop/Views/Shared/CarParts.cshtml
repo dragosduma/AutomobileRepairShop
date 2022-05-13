@@ -11,12 +11,12 @@
     </head>
     <body>
 
-       <select name="appointments" id="appointments" style="margin-bottom: 25px">
-                <option value="" selected disabled hidden>Select appointment</option>
-                @foreach (AppointClasses item in Model.AppointList)
-                {
-                    <option value=@item.Appointment.Id>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand)  @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
-                }
+        <select name="appointments" id="appointments" style="margin-bottom: 25px">
+            <option value="" selected disabled hidden>Select appointment</option>
+            @foreach (AppointClasses item in Model.AppointList)
+            {
+                <option value=@item.Appointment.Id>@Html.DisplayFor(modelItem => item.Appointment.Id) @Html.DisplayFor(modelItem => item.Car.Brand)  @Html.DisplayFor(modelItem => item.Appointment.Date)</option>
+            }
         </select>
 
         <div class="container-fluid">
@@ -47,7 +47,7 @@
                     }
                 </tbody>
         </div>
-         
+
         <div class="container-fluid">
             <!--<p class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Parts to be billed:</p>-->
             <table class="table table-borderless" id="myTable1">
@@ -113,9 +113,8 @@
                 cell = $(row.insertCell(2));
                 cell.append($(this).attr('itemlaborprice'));
             });
-            
-            function createBill(){
 
+            function createBill(){
                 if(list.length<1){
                     alert("list is null");
                 }else
@@ -123,7 +122,7 @@
                     var itemId={Id: parseInt(document.getElementById("appointments").value)};
                     list.push(itemId);
                     var dataToPost=JSON.stringify(list);
-                   
+
                     $.ajax({
                         type: "POST",
                         url: '/Employee/CreateBill',
@@ -164,8 +163,7 @@
                 request.send();
             }
         </script>
-
-        <button><a href="javascript:;" onclick="createBill()">Create Bill</a></button> 
+        <button><a href="javascript:;" onclick="createBill()">Create Bill</a></button>
     </body>
     </html>
 }

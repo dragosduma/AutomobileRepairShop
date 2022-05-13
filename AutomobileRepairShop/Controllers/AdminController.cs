@@ -33,12 +33,9 @@ namespace AutomobileRepairShop.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddEmployee(User user)
         {
-            
             AutoRSContext db = new AutoRSContext();
             user.IdRole = 3;
-
             // check for email duplicates
-
             User email = db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
             try
             {
