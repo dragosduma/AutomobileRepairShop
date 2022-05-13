@@ -17,7 +17,6 @@ namespace AutomobileRepairShop.Controllers
             FileStream docStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             PdfLoadedDocument loadedDocument = new PdfLoadedDocument(docStream);
             PdfLoadedForm form = loadedDocument.Form;
-
             //Edit each field using the fields' name (inspect the doc in browser)
             (form.Fields[0] as PdfLoadedTextBoxField).Text = "John";
             (form.Fields["name8[last]"] as PdfLoadedTextBoxField).Text = "Doe";

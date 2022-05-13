@@ -20,17 +20,16 @@ namespace AutomobileRepairShop.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginAsync(User user)
         {
-            if (user.Email == null || user.Password == null) return View();
-
+            if (user.Email == null || user.Password == null) 
+                return View();
             AutoRSContext db = new AutoRSContext();
-            
+
             User user1 = db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
             if (user1 == null)
             {
                 ViewBag.EmailNotExists = "Account doesn't exist!";
                 return View();
             }
-
             if (!VerifyPassword(user.Password, user1.Password))
             {
                 ViewBag.WrongPassword = "Wrong password!";
@@ -111,7 +110,6 @@ namespace AutomobileRepairShop.Controllers
         }
 
         // REGISTRATION RELATED METHODS
-
         public IActionResult Register()
         {
             ViewBag.IsLogged = IsLogged();
@@ -125,9 +123,7 @@ namespace AutomobileRepairShop.Controllers
             AutoRSContext db = new AutoRSContext();
             // idrole==2 means regular user
             user.IdRole = 2;
-
             // check for email duplicates
-
             User email = db.Users.FirstOrDefault(x => x.Email.ToLower() == user.Email.ToLower());
             try
             {
@@ -150,6 +146,6 @@ namespace AutomobileRepairShop.Controllers
                 Debug.WriteLine(ex.ToString());
             }
             return View();
-        } 
+        }
     }
 }

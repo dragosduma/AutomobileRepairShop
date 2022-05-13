@@ -58,6 +58,7 @@ namespace AutomobileRepairShop.Controllers
             Debug.WriteLine("");
             return Json(new { success = true });
         }
+
         [HttpPost]
         public ActionResult CreateBills([FromBody] List<CarPart> array)
         {
@@ -75,10 +76,8 @@ namespace AutomobileRepairShop.Controllers
         public JsonResult CreateBill([FromBody] List<CarPart> partsIds)//, int appointmentId)
         {
             Debug.WriteLine("Creating bill");
-
             int appointmentId = partsIds.LastOrDefault().Id;
             partsIds.RemoveAt(partsIds.Count - 1);
-
             Appointment appointment = db.Appointments.FirstOrDefault(x => x.Id == appointmentId);
             User user = db.Users.FirstOrDefault(x => x.Id == appointment.IdUser);
             if (user == null)
@@ -88,9 +87,9 @@ namespace AutomobileRepairShop.Controllers
             }
             string name = user.Name;
             string surname = user.Surname;
-
             string description = "";
             int price = 0;
+
             foreach (CarPart cp in partsIds)
             {
                 CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
@@ -99,7 +98,6 @@ namespace AutomobileRepairShop.Controllers
             }
             // Generate Database entry
             Bill bill = CreateBillEntry(appointment,description,price);
-
             // return bill Id and name
             string date = appointment.Date.ToString("yyyyMMdd");
             string fileName = name + surname + "_" + date + ".pdf";
@@ -113,18 +111,14 @@ namespace AutomobileRepairShop.Controllers
             bill.Description = description;
             bill.UserId = appointment.IdUser;
             bill.Price = price;
-
-
             bill.AppointmentId = appointment.Id;
             bill.CarId = appointment.IdCar;
             db.Bills.Add(bill);
-
             appointment.Finished = true;
             db.Appointments.Update(appointment);
             db.SaveChanges();
             return bill;
         }
-
 
         // create bill based on bill id
         public ActionResult CreateDocument(Bill bill)
@@ -164,14 +158,11 @@ namespace AutomobileRepairShop.Controllers
             //If the position is not set to '0' then the PDF will be empty.
             stream.Position = 0;
             //Close the document.
-            loadedDocument.Close(true);
-            
+            loadedDocument.Close(true);           
             //Defining the ContentType for pdf file.
-            string contentType = "application/pdf";
-            
+            string contentType = "application/pdf";            
             //Creates a FileContentResult object by using the file contents, content type, and file name.
             stream.Position = 0;
-
             return File(stream, contentType, fileName);
         }
 
@@ -204,7 +195,6 @@ namespace AutomobileRepairShop.Controllers
         {
             users = db.Users.ToList();
             appointments = db.Appointments.ToList();
-
             Debug.WriteLine("SearchEmail entered");
             Debug.WriteLine(userMail.Email);
             User u = db.Users.FirstOrDefault(model => model.Email.ToLower() == userMail.Email.ToLower());
