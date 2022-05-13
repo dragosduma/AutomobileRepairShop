@@ -89,21 +89,6 @@
                 list.push(itemId);
                 var dataToPost=JSON.stringify(list);
 
-                $.ajax({
-                    async: true,
-                    type: 'POST',
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    data: dataToPost,
-                    url: '/Employee/BillsAdd',
-                    success: function(data) {
-                        if(data.success){
-                        };
-                    },
-                    error: function() {
-                        alert("There is some problem.");
-                    }
-                });
                 var table=document.getElementById("myTable1");
                 var row = table.insertRow(1);
                 var cell = $(row.insertCell(0));

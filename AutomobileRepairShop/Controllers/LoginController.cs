@@ -38,8 +38,6 @@ namespace AutomobileRepairShop.Controllers
             }
             else
             {
-                Debug.WriteLine("Welcome " + user1.Name + " " + user1.Surname);
-
                 // cookie magic
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
