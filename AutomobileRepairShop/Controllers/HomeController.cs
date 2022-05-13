@@ -110,6 +110,7 @@ namespace AutomobileRepairShop.Controllers
             return RedirectToAction("Index");  //maybe redirect to user's appointment list/history
         }
 
+        [Authorize (Roles ="Customer")]
         public ActionResult History()
         {
             String email = GetEmail();
