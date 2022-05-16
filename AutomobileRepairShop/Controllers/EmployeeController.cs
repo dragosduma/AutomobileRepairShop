@@ -152,7 +152,7 @@ namespace AutomobileRepairShop.Controllers
 
         public string DescriptionDecode(string description)
         {
-            return description.Replace('@', '\n');
+            return description.Replace('@', '\n'); 
         }
 
         public ActionResult Appointments()
