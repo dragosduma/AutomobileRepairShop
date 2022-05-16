@@ -45,35 +45,8 @@ namespace AutomobileRepairShop.Controllers
             return View(mymodel);
         }
 
-        [HttpPost]
-        public JsonResult BillsAdd([FromBody] List<CarPart> array)
-        {
-            carParts.Clear();
-            foreach (CarPart cp in array)
-            {
-                CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
-                carParts.Add(carPart);
-                Debug.Write(carPart.Id + " ");
-            }
-            Debug.WriteLine("");
-            return Json(new { success = true });
-        }
 
-        [HttpPost]
-        public ActionResult CreateBills([FromBody] List<CarPart> array)
-        {
-            carParts.Clear();
-            foreach (CarPart cp in array)
-            {
-                CarPart carPart = db.CarParts.Single(model => model.Id == cp.Id);
-                carParts.Add(carPart);
-                Debug.Write(carPart.Id + " ");
-            }
-            Debug.WriteLine("");
-            return RedirectToAction("Bills", "Employee");
-        }
-
-        public JsonResult CreateBill([FromBody] List<CarPart> partsIds)//, int appointmentId)
+        public JsonResult CreateBill([FromBody] List<CarPart> partsIds)
         {
             Debug.WriteLine("Creating bill");
             int appointmentId = partsIds.LastOrDefault().Id;
@@ -133,14 +106,12 @@ namespace AutomobileRepairShop.Controllers
             int appId = bill.AppointmentId;
             Appointment thisapp = db.Appointments.FirstOrDefault(x => x.Id == appId);
 
-            Debug.WriteLine("Creating Document");
             //Load the pdf template from the project directory
             string root = Directory.GetCurrentDirectory();
             string fileName = root + "/wwwroot/docs/Bill_Example2.pdf";
             FileStream docStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             PdfLoadedDocument loadedDocument = new PdfLoadedDocument(docStream);
             PdfLoadedForm form = loadedDocument.Form;
-
             //Edit each field using the fields' name (inspect the doc in browser)
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             (form.Fields["name8[first]"] as PdfLoadedTextBoxField).Text = name;
@@ -148,7 +119,6 @@ namespace AutomobileRepairShop.Controllers
             (form.Fields["description6"] as PdfLoadedTextBoxField).Text = description;
             (form.Fields["finalPrice11"] as PdfLoadedTextBoxField).Text = finalPrice.ToString();
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
-
             //Define the file name.
             string date = thisapp.Date.ToString("yyyyMMdd");
             fileName = name + surname + "_" + date + ".pdf";
@@ -158,9 +128,9 @@ namespace AutomobileRepairShop.Controllers
             //If the position is not set to '0' then the PDF will be empty.
             stream.Position = 0;
             //Close the document.
-            loadedDocument.Close(true);           
+            loadedDocument.Close(true);
             //Defining the ContentType for pdf file.
-            string contentType = "application/pdf";            
+            string contentType = "application/pdf";
             //Creates a FileContentResult object by using the file contents, content type, and file name.
             stream.Position = 0;
             return File(stream, contentType, fileName);
@@ -182,7 +152,7 @@ namespace AutomobileRepairShop.Controllers
 
         public string DescriptionDecode(string description)
         {
-            return description.Replace('@', '\n');
+            return description.Replace('@', '\n'); 
         }
 
         public ActionResult Appointments()

@@ -36,14 +36,16 @@
                                     </ul>
                                 </li>
                                 }
+                                
                                 else if (@ViewBag.IsEmployee == true)
                                 {
                                     <li class="nav-item"><a id="bill" class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Bills">Create bill</a></li>
                                 }
+                                
                                 else 
                                 {
-                                    <li class="nav-item"><a id="appointment" class="nav-link" asp-area="" asp-controller="Home" asp-action="Appointments">Make an appointment</a></li>
-                                    <li class="nav-item"><a id="history" class="nav-link" asp-area="" asp-controller="Home" asp-action="History">View appointment history</a></li>
+                                    <li class="nav-item"><a id="appointment" class="nav-link" asp-area="" asp-controller="Client" asp-action="Appointments">Make an appointment</a></li>
+                                    <li class="nav-item"><a id="history" class="nav-link" asp-area="" asp-controller="Client" asp-action="History">View appointment history</a></li>
                                 }
                             }
                     </ul>

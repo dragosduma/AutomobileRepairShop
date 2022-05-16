@@ -10,11 +10,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
         options.LoginPath = "/Home";
         options.Cookie.Name = "userSession";
-        //options.SlidingExpiration = true;
-        //options.AccessDeniedPath = "/Forbidden/";
+        options.AccessDeniedPath = "/Forbidden/";
     });
 
 
@@ -35,6 +34,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseStaticFiles();
 app.UseEndpoints(endpoints =>
 {
