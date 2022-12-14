@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Syncfusion.Pdf.Parsing;
+using System.Collections;
 using System.Diagnostics;
-using System.Web;
 using System.Dynamic;
-using System.Windows;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
 
 namespace AutomobileRepairShop.Controllers
 {
@@ -133,12 +135,14 @@ namespace AutomobileRepairShop.Controllers
             string contentType = "application/pdf";
             //Creates a FileContentResult object by using the file contents, content type, and file name.
             stream.Position = 0;
-            return File(stream, contentType, fileName);
+            CreateMessageWithAttachment("smtp.gmail.com", "dragos.duma@gmail.com"); //TO DO: ADD FILE AS A PARAMETER HERE MAYBE OR FIND A WAY TO SEND IT TO THIS METHOD
+            return File(stream, contentType, fileName);                             //Second TO DO: in loc de emailul meu trebuie sa luam emailul userului care a facut appointmentul pt factura asta
         }
 
         [Authorize (Roles = "Customer,Employee")]
         public IActionResult DownloadFile(int billId)
         {
+
             Bill bill = db.Bills.FirstOrDefault(x => x.Id == billId);
             User customer = null;
             Debug.WriteLine(billId + "bill ID");
@@ -194,6 +198,58 @@ namespace AutomobileRepairShop.Controllers
 
             }
             return Json(new { status = false });
+        }
+
+        public static void CreateMessageWithAttachment(string server, string emailReceiver)
+        {
+            // Specify the file to be attached and sent.
+            // This example assumes that a file named Data.xls exists in the
+            // current working directory.
+            // Create a message and set up the recipients.
+            MailMessage message = new MailMessage(
+                "automobilerepairshop1234@gmail.com",
+                emailReceiver,
+                "Your receipt has been emitted.",
+                "See the attached pdf file.");
+
+            // Add the file attachment to this email message.
+            //var attachment = new Attachment(file, "report.pdf", MediaTypeNames.Application.Pdf); // AM INCERCAT SA IL PREIAU AICI CA SI FileStream dar nu o mers
+            //message.Attachments.Add(attachment);
+
+            //Send the message.
+
+
+            // Add credentials if the SMTP server requires them.
+            SmtpClient client = new SmtpClient(server, 587);
+            client.EnableSsl = true;
+            client.Credentials = new NetworkCredential("automobilesrepairshop1234@gmail.com", "bkrnlpnxztyxqjxo");
+
+            try
+            {
+
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception caught in CreateMessageWithAttachment(): {0}",
+                    ex.ToString());
+            }
+            // Display the values in the ContentDisposition for the attachment.
+            //ContentDisposition cd = attachment.ContentDisposition;
+            //Console.WriteLine("Content disposition");
+            //Console.WriteLine(cd.ToString());
+            //Console.WriteLine("File {0}", cd.FileName);
+            //Console.WriteLine("Size {0}", cd.Size);
+            //Console.WriteLine("Creation {0}", cd.CreationDate);
+            //Console.WriteLine("Modification {0}", cd.ModificationDate);
+            //Console.WriteLine("Read {0}", cd.ReadDate);
+            //Console.WriteLine("Inline {0}", cd.Inline);
+            //Console.WriteLine("Parameters: {0}", cd.Parameters.Count);
+            //foreach (DictionaryEntry d in cd.Parameters)
+            //{
+            //    Console.WriteLine("{0} = {1}", d.Key, d.Value);
+            //}
+            //attachment.Dispose();
         }
     }
 }
