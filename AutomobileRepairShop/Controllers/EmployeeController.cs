@@ -135,7 +135,7 @@ namespace AutomobileRepairShop.Controllers
             string contentType = "application/pdf";
             //Creates a FileContentResult object by using the file contents, content type, and file name.
             stream.Position = 0;
-            CreateMessageWithAttachment("smtp.gmail.com", "dragos.duma@gmail.com"); //TO DO: ADD FILE AS A PARAMETER HERE MAYBE OR FIND A WAY TO SEND IT TO THIS METHOD
+            CreateMessageWithAttachment("smtp.gmail.com", user.Email,stream,fileName,contentType); //TO DO: ADD FILE AS A PARAMETER HERE MAYBE OR FIND A WAY TO SEND IT TO THIS METHOD
             return File(stream, contentType, fileName);                             //Second TO DO: in loc de emailul meu trebuie sa luam emailul userului care a facut appointmentul pt factura asta
         }
 
@@ -200,7 +200,7 @@ namespace AutomobileRepairShop.Controllers
             return Json(new { status = false });
         }
 
-        public static void CreateMessageWithAttachment(string server, string emailReceiver)
+        public static void CreateMessageWithAttachment(string server, string emailReceiver, MemoryStream stream, string fileName, string fileType)
         {
             // Specify the file to be attached and sent.
             // This example assumes that a file named Data.xls exists in the
@@ -214,7 +214,7 @@ namespace AutomobileRepairShop.Controllers
 
             // Add the file attachment to this email message.
             //var attachment = new Attachment(file, "report.pdf", MediaTypeNames.Application.Pdf); // AM INCERCAT SA IL PREIAU AICI CA SI FileStream dar nu o mers
-            //message.Attachments.Add(attachment);
+            message.Attachments.Add(new Attachment(stream,fileName,fileType));
 
             //Send the message.
 
